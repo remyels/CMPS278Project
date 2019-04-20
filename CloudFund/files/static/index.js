@@ -22,7 +22,7 @@ function checkLogin() {
 }
 
 function checkSignUp() {
-    if ($("#inputSignUpFirstName").val()&&$("#inputSignUpLastName").val()&&$("#inputSignUpEmailAddress").val()&&validEmail($("#inputSignUpEmailAddress").val())&&$("#inputSignUpPassword").val().length>=8&&$("#inputSignUpRepeatPassword").val()==$("#inputSignUpPassword").val())
+    if ($("#inputSignUpFirstName").val()&&$("#inputSignUpLastName").val()&&$("#inputSignUpEmailAddress").val()&&validEmail($("#inputSignUpEmailAddress").val())&&$("#inputSignUpRepeatPassword").val()&&$("#inputSignUpRepeatPassword").val()==$("#inputSignUpPassword").val())
     {
         $("#signUpBtn").prop("disabled", false);
     }
@@ -38,9 +38,9 @@ function validEmail(email) {
 
 function forgotPassword() {
 	$(this).css("display", "none");
-	$("#loginModal form-group:nth-child(2)").remove();
-	$("#loginModal form-group input").attr("placeholder", "Email address associated with your account")
-	$("#loginBtn").prop("onclick", null).off("click");
+	$("#login-password-form-group").remove();
+	//$("#loginModal form-group input").attr("placeholder", "Email address associated with your account")
+	$("#loginBtn").off("click");
 	$("#loginBtn").click(resetPassword);
 }
 

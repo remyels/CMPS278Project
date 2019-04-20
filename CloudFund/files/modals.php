@@ -9,12 +9,12 @@
 				</div>
 				<div class="modal-body">
 					<form method="" action="#">
-						<div class="form-group">
+						<div id="login-email-form-group" class="form-group">
 							<label for="inputEmailAddress">Email address:</label>
 							<input class="form-control" placeholder="Email address "
 									type="text" id="inputEmailAddress" name="inputEmailAddress" />
 						</div>
-						<div class="form-group">
+						<div id="login-password-form-group" class="form-group">
 							<label for="inputPassword">Password:</label>
 							<input class="form-control" placeholder="Password"
 									type="password" id="inputPassword" name="inputPassword" />
@@ -59,7 +59,7 @@
 						</div>
 						<div class="form-group">
 							<label for="inputSignUpPassword">Password:</label>
-							<input class="form-control" placeholder="Password"
+							<input class="form-control" placeholder="Password (should contain a capital letter, a symbol, a number and be of length 8+)"
 									type="password" id="inputSignUpPassword" name="inputSignUpPassword" />
 						</div>
                         <div class="form-group">

@@ -24,12 +24,7 @@
                     font-size: 20px;
                 }
             </style>
-            <p>We are a group of 3 el kingos lovers who thought it would be a great idea to make this website in order to spread the words of el kingos</p>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <img src="static/images/rapistremy.png" alt="">
-            </div>
+            <p>This is our CMPS278 Project. If there's anything you would like to tell us, please use the contact form that you can access from the links above.</p>
         </div>
 	</div>
 </div>

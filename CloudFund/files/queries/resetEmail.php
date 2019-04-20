@@ -41,7 +41,7 @@ try {
 	 
 					You have requested a password reset. In order to reset your password, please click on the link below:
 					
-					localhost/CloudFund/files/resetPassword.php?email='.$to.'&hash='.$hash.'
+					localhost/CMPS278Project/CloudFund/files/resetPassword.php?email='.$to.'&hash='.$hash.'
 					 
 					(If you did not request a password reset, please disregard this email.). 
 					 
