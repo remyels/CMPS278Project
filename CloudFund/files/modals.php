@@ -23,6 +23,7 @@
 				</div>
 				<p id="loginResult" style="text-align: center; opacity: 0; user-select: none;">PLACEHOLDER</p>
 				<div class="modal-footer">
+					<a href="#" id="forgotPassword" class="pull-left">Forgot your password? Click here!</a>
 					<a type="submit" id="loginBtn" class="btn btn-success">Login</a>
 				</div>
 			</div>
