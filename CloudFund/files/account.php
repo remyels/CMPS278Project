@@ -5,9 +5,9 @@
 	<script type="text/javascript" src="static/account.js"></script>
 </head>
 <body>
+	<?php include "../connect/sessionCheck.php"; ?>
 	<?php include "navbar.php"; ?>
 	<?php include "modals.php"; ?>
-	<?php include "../connect/sessionCheck.php"; ?>
 	<div id="content" style="padding-top: 5%">
 		<div class="container">
 			<h2>Edit your account details, <?= $_SESSION['FirstName'] ?>!</h2>
