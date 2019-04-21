@@ -21,9 +21,12 @@
         <li><a href="contact.php">Contact us</a></li>
       </ul>
 	  <?php if (isset($_SESSION['LoggedInUserID'])) { ?> 
-		<form class="navbar-form navbar-left">
+		<form class="navbar-form navbar-left" autocomplete="off">
 				<div class="form-group">
-				    <input type="text" class="form-control" id="search-bar" placeholder="Search for people...">
+				    <input type="text" autocomplete="off" list="users" data-min-length='1' class="form-control" id="search-bar" placeholder="Search for people...">
+						<datalist id="users">
+					
+						</datalist>
 				</div>
 				<button type="submit" class="btn btn-default">Search</button>
 		</form>
