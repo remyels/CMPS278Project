@@ -25,8 +25,9 @@ try {
 				$_SESSION["LoggedInUserType"] = $row['UserType'];
 				$_SESSION["FirstName"] = $row['FirstName'];
 				$_SESSION["LastName"] = $row['LastName'];
+				$_SESSION["UserRow"] = $row;
 
-				echo "<script>window.location =  'home.php'";
+				echo "<script>window.location =  'index.php'";
 			}
 			else {
 				// A verified account was found

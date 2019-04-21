@@ -1,4 +1,6 @@
-<nav class="navbar navbar-default navbar-static-top">
+<?php session_start() ?>
+
+<nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -18,10 +20,24 @@
         <li><a href="about.php">About</a></li>
         <li><a href="contact.php">Contact us</a></li>
       </ul>
+	  <?php if (isset($_SESSION['LoggedInUserID'])) { ?> 
+		<form class="navbar-form navbar-left">
+				<div class="form-group">
+				    <input type="text" class="form-control" id="search-bar" placeholder="Search for people...">
+				</div>
+				<button type="submit" class="btn btn-default">Search</button>
+		</form>
+	  <?php } ?>
       <ul class="nav navbar-nav navbar-right">
+	  <?php if (isset($_SESSION['LoggedInUserID'])) { ?>
+			<li><a href="#"><i class="fa fa-cog"></i> Account</a></li>
+			<li class="divider"></li>
+			<li><a href="./queries/endSession.php"><i class="fa fa-sign-out"></i> Logout</a></li>
+	  <?php } else { ?>
           <li><a id="signUpNav" href="#" data-target="#signUpModal" data-toggle="modal">Sign Up <i class="fa fa-user-plus" aria-hidden="true"></i></a></li>
           <li><a id="loginUpNav" href="#" data-target="#loginModal" data-toggle="modal">Login <i class="fa fa-user" aria-hidden="true"></i></a></li>
-      </ul>
+      <?php } ?>
+	  </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

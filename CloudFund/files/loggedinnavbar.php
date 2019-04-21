@@ -17,8 +17,6 @@
                 <li class="active"><a style="color: rgb(237, 57, 36)" href="index.php">Home <span class="sr-only">(current)</span></a></li>
                 <li><a href="about.php">About</a></li>
                 <li><a href="contact.php">Contact us</a></li>
-                <li><a href="borrow.php">Borrow</a></li>
-                <li><a href="invest.php">Invest</a></li>
             </ul>
 			<form class="navbar-form navbar-left">
 				<div class="form-group">

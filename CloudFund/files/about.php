@@ -9,7 +9,7 @@
 
 	<?php include 'modals.php'; ?>
 
-<div id="content" style="padding-top: 0">
+<div id="content">
 	<div class="container container-fluid">
 		<div class="row">
 			<div class="col-lg-12">

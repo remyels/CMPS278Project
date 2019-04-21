@@ -10,6 +10,8 @@ body {
     background: url("./images/background.jpg");
     background-size: cover;
     background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
     font-family: Lato;
     color: rgb(237, 57, 36);
 	padding: 0;

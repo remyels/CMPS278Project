@@ -12,4 +12,4 @@ function closeAllLists() {
 	if (autocomplete.length) {
 		autocomplete.remove();
 	}
-  }
+}

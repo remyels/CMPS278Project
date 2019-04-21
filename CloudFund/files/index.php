@@ -11,6 +11,7 @@
 
 <div id="content">
 	<div class="container">
+		<?php if (!isset($_SESSION['LoggedInUserID'])) { ?> 
 		<div class="row">
 			<div class="col-lg-12">
 				<h1>CloudFund</h1>
@@ -19,6 +20,9 @@
 				<!--<button class="btn btn-info btn-lg">Get Started</button>-->
 			</div>
 		</div>
+		<?php } else { ?>
+		
+		<?php } ?>
 	</div>
 </div>
 <?php include 'footer.php'; ?>
