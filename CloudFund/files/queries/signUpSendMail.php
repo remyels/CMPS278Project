@@ -72,7 +72,7 @@ try {
 					 
 					'; 
 
-					$headers = "From: remysabeh@gmail.com\r\n";
+					$headers = "From: cloudfundlb@gmail.com\r\n";
 					
 					$mail = mail($to, $subject, $body, $headers);
 					
