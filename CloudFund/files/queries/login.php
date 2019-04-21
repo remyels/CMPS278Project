@@ -7,7 +7,7 @@ try {
 	session_start();
 
 	if (isset($_REQUEST['email'])&&!empty($_REQUEST['email'])
-		&&!empty($_REQUEST['email'])&&!empty($_REQUEST['password'])) {
+		&&isset($_REQUEST['password'])&&!empty($_REQUEST['password'])) {
 		$email = $db->quote($_REQUEST['email']);
 		$password = openssl_digest($_REQUEST['password'], 'sha512');
 		$password = $db->quote($password);

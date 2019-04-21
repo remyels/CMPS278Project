@@ -30,7 +30,7 @@
 	  <?php } ?>
       <ul class="nav navbar-nav navbar-right">
 	  <?php if (isset($_SESSION['LoggedInUserID'])) { ?>
-			<li><a href="#"><i class="fa fa-cog"></i> Account</a></li>
+			<li><a href="account.php"><i class="fa fa-cog"></i> Account</a></li>
 			<li class="divider"></li>
 			<li><a href="./queries/endSession.php"><i class="fa fa-sign-out"></i> Logout</a></li>
 	  <?php } else { ?>
