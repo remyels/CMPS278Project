@@ -1,4 +1,4 @@
-<?php session_start() ?>
+<?php session_start(); ?>
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
