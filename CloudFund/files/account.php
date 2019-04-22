@@ -2,6 +2,7 @@
 <html>
 <head>
 	<?php include "styles.php"; ?>
+	<link rel="stylesheet" type="text/css" href="static/account.css"/>
 	<script type="text/javascript" src="static/account.js"></script>
 </head>
 <body>
@@ -12,6 +13,39 @@
 		<div class="container">
 			<h2>Edit your account details, <?= $_SESSION['FirstName'] ?>!</h2>
 			<div class="jumbotron">
+				<!--<div id="profile-picture-container">
+				<img id="profile-picture" src="static/images/emptyuser.jpg" class="img-thumbnail"/>
+				<input type="file" id="upload" value="Upload picture">
+				</div>-->
+				<div class="box">
+          <!-- fileuploader view component -->
+          <form action="#" method="post" class="text-center">
+            <div class="margin-bottom-20"> 
+			  <?php if (!$_SESSION['UserRow']['ProfilePicture']) { ?>
+              <img id="profile-picture" class="thumbnail box-center margin-top-20" alt="No image" src="static/images/emptyuser.jpg">
+			  <?php } else { ?>
+			  <img id="profile-picture" class="thumbnail box-center margin-top-20" alt="No image" src="<?= $_SESSION['UserRow']['ProfilePicture'] ?>">
+			  <?php } ?>
+            </div>
+            <p>
+              <button type="submit" class="btn btn-sm" name="delete"><i class="icon-remove"></i> Remove</button>
+            </p>
+          </form>
+          <!-- ./fileuploader view component -->
+          <div class="row">
+            <div class="col-sm-10">
+              <span class="control-fileupload">
+                <label for="pic" class="text-left">Please choose a file on your computer.</label>
+                <input type="file" id="pic">
+              </span>
+            </div>
+            <div class="col-sm-2">  
+              <button id="uploadProfileBtn" type="button" class="btn btn-primary btn-block">
+                <i class="icon-upload icon-white"></i> Upload
+              </button>
+            </div>
+          </div>
+        </div>
 				<form>
 				  <input type="hidden" id="accountID" name="LoggedInUserID" value="<?= $_SESSION['LoggedInUserID'] ?>"/>
 				  <div class="form-row">
