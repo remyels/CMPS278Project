@@ -29,16 +29,17 @@
             <div class="well well-sm well-social-post">
         <form>
             <ul class="list-inline" id='list_PostActions'>
+				<div id="post-result"></div>
                 <li class='active'><a href='#'>Update status</a></li>
-                <li><a href='#'>Add photos/Video</a></li>
-                <li><a href='#'>Create photo album</a></li>
+                <li><a href='#'>Add photo/video</a></li>
+				<img id="post-thumbnail" style="display: none;"/>
             </ul>
-            <textarea class="form-control" placeholder="What's in your mind?"></textarea>
+            <textarea class="form-control" placeholder="What's on your mind?"></textarea>
             <ul class='list-inline post-actions'>
                 <li><a href="#"><span class="glyphicon glyphicon-camera"></span></a></li>
                 <li><a href="#" class='glyphicon glyphicon-user'></a></li>
                 <li><a href="#" class='glyphicon glyphicon-map-marker'></a></li>
-                <li class='pull-right'><a href="#" class='btn btn-primary btn-xs'>Post</a></li>
+                <li class='pull-right'><a id="postStatus" href="#" class='btn btn-primary btn-xs'>Post</a></li>
             </ul>
         </form>
             </div>
