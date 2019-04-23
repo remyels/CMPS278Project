@@ -1,6 +1,12 @@
 <?php
+
+	session_start();
+
 	include '../../connect/connectPDO.php';
-	$query = 'SELECT FirstName, LastName FROM user;';
+	
+	$id = $db->quote($_SESSION['LoggedInUserID']);
+	
+	$query = "SELECT UserID, FirstName, LastName FROM user WHERE UserID <> $id;";
 	$users = $db->query($query);
 	
 	$result = array();
