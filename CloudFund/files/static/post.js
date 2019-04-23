@@ -13,4 +13,8 @@ $(function(){
         self.addClass( 'active' );
         currentAction = self;
     });
+	
+	$(".glyphicon").each(function() {
+		$(this).css("display", "none");
+	})
 });

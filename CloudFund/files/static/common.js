@@ -1,9 +1,9 @@
 $(document).ready(function() {
-  $('.active > a').css("color", "white");
-  $('.active').removeClass('active');
+  $('.navbar .active > a').css("color", "white");
+  $('.navbar .active').removeClass('active');
   var path = location.pathname.split("/");
   $('a[href="' + path[path.length-1] + '"]').parent().addClass('active'); 
-  $('.active > a').css("color", "rgb(237, 57, 36)");
+  $('.navbar .active > a').css("color", "rgb(237, 57, 36)");
 });
 
 $("#signUpBtn").on("click", function() {

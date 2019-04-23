@@ -10,6 +10,7 @@ $(document).ready(function() {
 	$("#profile-picture").css("width", 100);
 	$("#accountEmail, #accountPersonalInformation, #accountProfessionalInformation, #accountPassword, #accountConfirmPassword").change(checkUpdateButton);
 	$("#uploadProfileBtn").click(uploadImage);
+	$("#deleteProfileBtn").click(deleteImage);
 });
 
 function checkUpdateButton() {
@@ -39,9 +40,11 @@ function uploadImage() {
 	fd.append('file', files);
 	
 	$.ajax({
-		url: '../queries/uploadProfile.php',
+		url: 'queries/uploadProfile.php',
 		type: 'post',
-		data: fd,
+		data: fd,	
+		processData: false,
+		contentType: false,
 		success: function(response) {
 			if (response) {
 				document.location.reload();
@@ -49,6 +52,33 @@ function uploadImage() {
 			else {
 				alert("Failed to upload, please try again!");
 			}
-		}
-	})
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+           console.log(textStatus);
+		   console.log(errorThrown);
+        },
+	});
+}
+
+function deleteImage() {
+	if ($("#profile-picture").hasClass("haspic")) 
+	{
+		$.ajax({
+		url: 'queries/deleteProfile.php',
+		type: 'post',
+		data: {id : $("#userid").val()},
+		success: function(response) {
+			if (response) {
+				document.location.reload();
+			}
+			else {
+				alert("Failed to delete, please try again!");
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+           console.log(textStatus);
+		   console.log(errorThrown);
+        },
+	});
+	}
 }

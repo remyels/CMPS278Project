@@ -20,15 +20,30 @@
 				<div class="box">
           <!-- fileuploader view component -->
           <form action="#" method="post" class="text-center">
+			<input id="userid" type="hidden" value="<?= $_SESSION['LoggedInUserID'] ?>" />
             <div class="margin-bottom-20"> 
-			  <?php if (!$_SESSION['UserRow']['ProfilePicture']) { ?>
+			
+			  <?php include "../connect/connectPDO.php";
+				include "../connect/updateSession.php";
+				
+			  $id = $_SESSION['LoggedInUserID'];
+			  
+			  $query = $db->prepare("SELECT * FROM user WHERE UserID = $id;");
+			  
+			  $query->execute();
+			  
+			  $row = $query->fetch();
+			  
+			  updateSession($row);
+			  
+			  if (!$_SESSION['UserRow']['ProfilePicture']) { ?>
               <img id="profile-picture" class="thumbnail box-center margin-top-20" alt="No image" src="static/images/emptyuser.jpg">
 			  <?php } else { ?>
-			  <img id="profile-picture" class="thumbnail box-center margin-top-20" alt="No image" src="<?= $_SESSION['UserRow']['ProfilePicture'] ?>">
+			  <img id="profile-picture" class="haspic thumbnail box-center margin-top-20" alt="No image" src="<?= $_SESSION['UserRow']['ProfilePicture'] ?>">
 			  <?php } ?>
             </div>
             <p>
-              <button type="submit" class="btn btn-sm" name="delete"><i class="icon-remove"></i> Remove</button>
+              <button id="deleteProfileBtn" type="button" class="btn btn-sm" name="delete"><i class="icon-remove"></i> Remove</button>
             </p>
           </form>
           <!-- ./fileuploader view component -->
@@ -36,7 +51,7 @@
             <div class="col-sm-10">
               <span class="control-fileupload">
                 <label for="pic" class="text-left">Please choose a file on your computer.</label>
-                <input type="file" id="pic">
+                <input type="file" name="file" id="pic">
               </span>
             </div>
             <div class="col-sm-2">  
