@@ -3,17 +3,17 @@ $(document).ready(function() {
 		$.ajax({
 			url: "../files/queries/getUsers.php",
 			type: "get",
+			async: false,
 			success: function (response) {
 				var result = JSON.parse(response);
 				//console.log(result);
 				if(result.length > 0){
-					var list = document.getElementById("users");
-					for(var i = 0; i < result.length; i++){
-						var option = document.createElement("option");
-						//console.log(result[i][0] + " " + result[i][1]);
-						var text = document.createTextNode(result[i][0] + " " + result[i][1]);
-						option.appendChild(text);
-						list.appendChild(option);
+					var datalist = document.getElementById("users");
+					for(var i = 0; i < result.length; i++) {
+						var opt = document.createElement("option");
+						opt.id = "user"+result[i]['UserID'];
+						opt.innerHTML = result[i]['FirstName'] + " " + result[i]['LastName'];
+						datalist.appendChild(opt);
 					}
 				}
 			},
@@ -21,15 +21,4 @@ $(document).ready(function() {
 				console.log(textStatus, errorThrown);
 			}
 		});
-			
-	closeAllLists();
-	
 });
-
-function closeAllLists() {
-    var autocomplete = $("#search-bar-autocomplete-list");
-	// Autocomplete list exists, so we delete it
-	if (autocomplete.length) {
-		autocomplete.remove();
-	}
-}
