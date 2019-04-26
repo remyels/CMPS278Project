@@ -12,9 +12,14 @@
 		$query = "UPDATE isfriendof SET accepted = 1 WHERE UserIDFrom = $from AND UserIDTo = $id;";
 		$execution = $db->exec($query);
 		
+		$numnotaccepted = $db->prepare("SELECT COUNT(*) AS count FROM isfriendof WHERE UserIDTo = $id AND accepted=0;");
+		$numnotaccepted->execute();
+		$row = $numnotaccepted->fetch();
+		$numleft = $row['count'];
+		
 		if($execution){
-			$result = "true";
+			$result = "true ".$numleft;
 		}
 	}
-	echo json_encode($result);
+	echo $result;
 ?>

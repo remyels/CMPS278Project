@@ -6,13 +6,9 @@ include '../../connect/connectPDO.php';
 
 $filename = $_FILES['file']['name'];
 
-print_r($_FILES['file']);
-
 $id = $_SESSION['LoggedInUserID'];
 
 $extension = explode("/", $_FILES['file']['type'])[1];
-
-echo $extension;
 
 $location = "../static/images/uploads/profilepictures/".$id.'.'.$extension;
 $relativetofileslocation = $db->quote("static/images/uploads/profilepictures/".$id.'.'.$extension);

@@ -8,12 +8,15 @@ function acceptFriend(clickedid){
         type: "post",
         data: params,
         success: function (response) {
-			var result = JSON.parse(response);
-			if(result == "true"){
+			if(response.includes("true")) {
 				//we should get the name and inform the user whom did he accept bas for now mashina its 3 am i'll fix it bokra
-				alert("You accepted!");
 				var rowid = "row" + from;
 				$("#" + rowid).fadeOut();
+				var numleft = response.split(" ")[1];
+				if (numleft==0) {
+					$("#requests-container").css("visibility", "hidden");
+					$("#header-message").html("You don't have any friend requests left!");
+				}
 			}
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -32,12 +35,15 @@ function rejectFriend(clickedid){
         type: "post",
         data: params,
         success: function (response) {
-			var result = JSON.parse(response);
-			if(result == "true"){
+			if(response.includes("true")){
 				//we should get the name and inform the user whom did he accept bas for now mashina its 3 am i'll fix it bokra
-				alert("You rejected!");
 				var rowid = "row" + from;
 				$("#" + rowid).fadeOut();
+				var numleft = response.split(" ")[1];
+				if (numleft==0) {
+					$("#requests-container").css("visibility", "hidden");
+					$("#header-message").html("You don't have any friend requests left!");
+				}
 			}
         },
         error: function(jqXHR, textStatus, errorThrown) {
