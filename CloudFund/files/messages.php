@@ -33,7 +33,16 @@
 		.undo {
 			color: black;
 		}
+		
+		.undo-center {
+			text-align: initial;
+		}
+		
+		.invisible {
+			display: none;
+		}
 	</style>
+	<script src="static/messages.js" type="text/javascript"></script>
 </head>
 <body>
 	<?php include 'navbar.php'; ?>
@@ -64,7 +73,7 @@
 			  
 			</div>
 			<!-- /.col -->
-			<div class="col-md-9">
+			<div id="all-messages" class="col-md-9">
 			  <div class="box box-primary">
 				<div class="box-header with-border">
 				  <h3 class="box-title">Inbox</h3>
@@ -74,10 +83,10 @@
 				<div class="box-body no-padding">
 				  <div class="mailbox-controls">
 					<!-- Check all button -->
-					<button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+					<button type="button" class="btn btn-default btn-sm checkbox-toggle invisible"><i class="fa fa-square-o"></i>
 					</button>
 					<div class="btn-group">
-					  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+					  <button type="button" class="btn btn-default btn-sm invisible"><i class="fa fa-trash-o"></i></button>
 					</div>
 					<div class="pull-right">
 					  <span class="undo"> 1-50/200 </span>
@@ -98,7 +107,7 @@
 						$numberOfMessages = 0;
 						
 						$currentUserId = $db->quote($_SESSION['LoggedInUserID']);
-						$query = "SELECT * FROM message m JOIN user u on m.UserIDFrom = u.UserID JOIN messagestatus ms on m.MessageStatus = ms.MessageStatusID where m.UserIDTo = $currentUserId AND ms.MessageStatus <> 'Deleted' ORDER BY m.MessageDate DESC";
+						$query = "SELECT * FROM message m JOIN user u on m.UserIDFrom = u.UserID JOIN messagestatus ms on m.MessageStatusID = ms.MessageStatusID where m.UserIDTo = $currentUserId AND ms.MessageStatus <> 'Deleted' ORDER BY m.MessageDate DESC";
 						$rows = $db->query($query);
 						
 						if($rows->rowCount() > 0){
@@ -108,7 +117,7 @@
 					  ?>
 					  <tr id="<?=$row['MessageID']?>">
 						<td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-						<td class="mailbox-name notranslate"><a data-id="<?=$row['MessageID']?>"><?php if($row["MessageStatus"] == "Unread"){echo '<span class="label label-primary pull-right">new</span>';}?>From: <?=$row['FirstName']?> <?=$row['LastName']?></a></td>
+						<td class="mailbox-name notranslate"><a class="message-click" style="cursor: pointer;" data-id="<?=$row['MessageID']?>"><?php if($row["MessageStatus"] == "Unread"){echo '<span class="label new-message label-primary pull-right">new</span>';}?>From: <?=$row['FirstName']?> <?=$row['LastName']?></a></td>
 						<td class="mailbox-subject notranslate"><b><?=$row['Subject']?></b></td>
 						<td class="mailbox-attachment"></td>
 						<td class="mailbox-date"><?=$row['MessageDate']?></td>
@@ -132,15 +141,15 @@
 				</div>
 				<!-- /.box-body -->
 				<div class="box-footer no-padding">
-				  <div class="mailbox-controls">
+				  <div style="margin-bottom: 10px;" class="mailbox-controls">
 					<!-- Check all button -->
-					<button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+					<button type="button" class="btn btn-default btn-sm checkbox-toggle invisible"><i class="fa fa-square-o"></i>
 					</button>
 					<div class="btn-group">
-					  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+					  <button type="button" class="btn btn-default btn-sm invisible"><i class="fa fa-trash-o"></i></button>
 					</div>
 					<!-- /.btn-group -->
-					<button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+					<button type="button" class="btn btn-default btn-sm invisible"><i class="fa fa-refresh"></i></button>
 					<div class="pull-right">
 					  <span class="undo"> 1-50/200 </span>
 					  <div class="btn-group">
@@ -157,69 +166,46 @@
 			</div>
 			
 			
-			<div class="col-md-9">
+			<div id="selected-message" style="display: none;" class="col-md-9">
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Read Mail</h3>
-
-              <div class="box-tools pull-right">
-                <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title="" data-original-title="Previous"><i class="fa fa-chevron-left"></i></a>
-                <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title="" data-original-title="Next"><i class="fa fa-chevron-right"></i></a>
-              </div>
             </div>
             <!-- /.box-header -->
 			<?php
-				include('connectPDO.php');
 			
-				$currentUserId = $db->quote($_SESSION['LOGGED_IN_USER_ID']);
-				$currentMessageId = $db->quote($_GET['messageId']);
-				$query = $db->prepare("SELECT * FROM message m JOIN user u on m.FROM_USER = USERID JOIN messagestatus ms on m.MESSAGESTATUSID = ms.MESSAGESTATUSID where (m.TO_USER = $currentUserId OR m.FROM_USER = $currentUserId) AND m.MESSAGEID = $currentMessageId;");
-				$query->execute();
-				$row = $query->fetch();
+				// $currentUserId = $db->quote($_SESSION['LoggedInUserID']);
+				// $currentMessageId = $db->quote($_GET['MessageID']);
+				// $query = $db->prepare("SELECT * FROM message m JOIN user u on m.UserIDFrom = UserID JOIN messagestatus ms on m.MessageStatus = ms.MessageStatusID where (m.UserIDTo = $currentUserId OR m.UserIDFrom = $currentUserId) AND m.MessageID = $currentMessageId;");
+				// $query->execute();
+				// $row = $query->fetch();
 				
-				$messageid = $row['MessageID'];
+				// $messageid = $row['MessageID'];
 				
-				if($row["MessageStatus"] == "Unread") {
-					$query = "UPDATE message SET MessageStatus = 2 WHERE MessageID = $messageid;";
-				}
+				// if($row["MessageStatus"] == "Unread") {
+					// $query = "UPDATE message SET MessageStatus = 2 WHERE MessageID = $messageid;";
+				// }
 							
 							?>
             <div class="box-body no-padding">
               <div class="mailbox-read-info">
-                <h3 id="subject">Subject here</h3>
-                <h5>From: <span id="first-name">First Name</span> <span id="last-name">Last Name</span>
-                  <span id="date" class="mailbox-read-time pull-right">Sent on this specific day</span></h5>
-              </div>
-              <!-- /.mailbox-read-info -->
-              <div class="mailbox-controls with-border text-center">
-                <div class="btn-group">
-                  <button id="deleteBtn2" type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="" data-original-title="Delete">
-                    <i class="fa fa-trash-o"></i></button>
-                  <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="" data-original-title="Reply">
-                    <i class="fa fa-reply"></i></button>
-                  
-                </div>
-                <!-- /.btn-group -->
-                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" title="" data-original-title="Print">
-                  <i class="fa fa-print"></i></button>
+                <h3 id="subject" class="undo-center" >Error</h3>
+                <h5 class="undo-center">From: <span id="first-name">Error</span> <span id="last-name"></span>
+                  <span id="date" class="mailbox-read-time pull-right">Error</span></h5>
               </div>
               <!-- /.mailbox-controls -->
-              <div class="mailbox-read-message">
-                This is to test the message
+              <div id="message-content" class="mailbox-read-message">
+                Error
               </div>
               <!-- /.mailbox-read-message -->
             </div>
           
             <!-- /.box-footer -->
             <div class="box-footer">
-              <div class="pull-right">
-                <button type="button" class="btn btn-default"><i class="fa fa-reply"></i> Reply</button>
-              </div>
 			  
               <button type="button" id="deleteBtn" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete</button>
-              <button type="button" class="btn btn-default"><i class="fa fa-print"></i> Print</button>
+              <button type="button" id="backBtn" class="btn btn-default"><i class="fa fa-arrow-left"></i> Back</button>
             </div>
-			<div id="feedback"></div>
             </div>
             <!-- /.box-footer -->
           </div>

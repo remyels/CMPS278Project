@@ -42,6 +42,7 @@ function forgotPassword() {
 	//$("#loginModal form-group input").attr("placeholder", "Email address associated with your account")
 	$("#loginBtn").off("click");
 	$("#loginBtn").click(resetPassword);
+	$("#loginBtn").html("Reset");
 }
 
 function resetPassword() {

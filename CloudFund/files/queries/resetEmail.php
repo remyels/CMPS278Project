@@ -4,7 +4,7 @@ try {
 	
 	include '../../connect/connectPDO.php';
 
-	if (isset($_REQUEST['email'])&&!empty($_REQUEST['email']) {
+	if (isset($_REQUEST['email'])&&!empty($_REQUEST['email'])) {
 
 		$email = $db->quote($_REQUEST['email']);
 		
@@ -16,16 +16,16 @@ try {
 		
 		if ($res->rowCount() > 0) {
 			// An account with the provided email was found
-			$query = "SELECT UserID FROM user WHERE email = $email AND active = 0";
-			$res = $db->query($query);
-			if ($res->rowCount() > 0) {
+			$query = $db->prepare("SELECT UserID FROM user WHERE email = $email AND active = 0");
+			$query->execute();
+			if ($query->rowCount() > 0) {
 				// An unverified account was found
 				echo "<span style='color: red'>You haven't verified your email yet! Please check your email for the verification link!</span>";
 			}
 			else {
 				// A verified account was found, an email will be sent
-				$row = $res->fetch();
-				$userid = $row['UserID'];
+				$row = $query->fetch();
+				$userid = $db->quote($row['UserID']);
 				
 				$hash = md5(rand(0, 1000));
 				$hashesc = $db->quote($hash);
