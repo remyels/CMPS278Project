@@ -77,7 +77,7 @@
 							$currentuserid = $db->quote($_SESSION['LoggedInUserID']);
 							$profileid = $db->quote($_GET['UserID']);
 							
-							$query = $db->prepare("SELECT *, COUNT(*) count FROM isfriendof WHERE (UserIDFrom = $currentuserid AND UserIDTo = $profileid AND accepted = 1) OR (UserIDFrom = $profileid AND UserIDTo = $currentuserid);");
+							$query = $db->prepare("SELECT *, COUNT(*) count FROM isfriendof WHERE (UserIDFrom = $currentuserid AND UserIDTo = $profileid) OR (UserIDFrom = $profileid AND UserIDTo = $currentuserid);");
 							$query->execute();
 							
 							$row = $query->fetch();
@@ -91,7 +91,7 @@
 							<?php } else if ($row['accepted']==0) { ?>
 							
 							<button id="addFriendBtn" class="btn btn-success btn-block" type="button" disabled>
-								<i class="fa fa-check"></i> <span id="addFriendBtnText">Request sent</span>
+								<i class="fa fa-check"></i> <span id="addFriendBtnText"> Request sent</span>
 							 </button>
 							
 							<?php } ?> 

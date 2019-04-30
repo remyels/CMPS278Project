@@ -4,14 +4,18 @@ $(document).ready(function() {
 
 function addFriend() {
 	var btn = $(this);
-	console.log("OK");
 	$.ajax({
 		url: "queries/addFriend.php",
 		type: "post",
-		data: {id: $("ProfileUserID").val()},
+		data: {id: $("#ProfileID").val()},
 		success: function(response) {
-			btn.removeClass("btn-default");
-			btn.addClass("btn-success");
+			console.log(response);
+			if (response) {
+				btn.removeClass("btn-default");
+				btn.addClass("btn-success");
+				btn.prop("disabled", true);
+				$("#addFriendBtn").html("<i class='fa fa-check'></i> Request sent");
+			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);
