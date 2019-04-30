@@ -10,22 +10,20 @@ try {
 		
 		//First, we need to check whether the account is already created given the provided email
 
-		$query = "SELECT * FROM user WHERE email = $email";
+		$query = $db->prepare("SELECT * FROM user WHERE email = $email");
+		$query->execute();
+		$num_rows = $query->rowCount(); 
+		$res = $query->fetch();
 		
-		$res = $db->query($query);
-		
-		if ($res->rowCount() > 0) {
+		if ($num_rows > 0) {
 			// An account with the provided email was found
-			$query = $db->prepare("SELECT UserID FROM user WHERE email = $email AND active = 0");
-			$query->execute();
-			if ($query->rowCount() > 0) {
+			if ($res['Active'] == 0) {
 				// An unverified account was found
 				echo "<span style='color: red'>You haven't verified your email yet! Please check your email for the verification link!</span>";
 			}
 			else {
 				// A verified account was found, an email will be sent
-				$row = $query->fetch();
-				$userid = $db->quote($row['UserID']);
+				$userid = $db->quote($res['UserID']);
 				
 				$hash = md5(rand(0, 1000));
 				$hashesc = $db->quote($hash);
@@ -35,7 +33,7 @@ try {
 				$exec = $db->exec($query);
 				
 				if ($exec) {
-					$to = $_REQUEST['email'];
+					$to = $res['Email'];
 					$subject = "CloudFund password reset";
 					$body = '
 	 
@@ -47,7 +45,7 @@ try {
 					 
 					'; 
 
-					$headers = "From: remysabeh@gmail.com\r\n";
+					$headers = "From: cloudfundlb@gmail.com\r\n";
 					
 					if (!mail($to, $subject, $body, $headers)) {
 						echo "Mailer Error: ".$mail->ErrorInfo;

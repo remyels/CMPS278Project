@@ -86,12 +86,8 @@
 					<input type="text" class="form-control" id="accountProfessionalInformation" value="<?= $_SESSION['UserRow']['ProfessionalInfo']?>" placeholder="Professional information">
 				  </div>
 				  <div class="form-group">
-					<label for="accountPassword">Password</label>
-					<input type="password" class="form-control" id="accountPassword" placeholder="Password (should contain a capital letter, a symbol, a number and be of length 8+)">
-				  </div>
-				  <div class="form-group">
-					<label for="accountConfirmPassword">Confirm Password</label>
-					<input type="password" class="form-control" id="accountConfirmPassword" placeholder="Confirm password">
+					<label for="accountPassword">Enter your password to continue</label>
+					<input type="password" class="form-control" id="accountPassword" placeholder="Password">
 				  </div>
 				  <input type="button" id="accountUpdateBtn" class="btn btn-primary" onclick="updateAccount()" value="Update information" disabled>
 				</form>	

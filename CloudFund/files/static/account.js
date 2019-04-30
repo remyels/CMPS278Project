@@ -8,13 +8,13 @@ $(document).ready(function() {
 	});
 	$("#profile-picture").css("height", 100);
 	$("#profile-picture").css("width", 100);
-	$("#accountEmail, #accountPersonalInformation, #accountProfessionalInformation, #accountPassword, #accountConfirmPassword").change(checkUpdateButton);
+	$("#accountEmail, #accountPersonalInformation, #accountProfessionalInformation, #accountPassword").change(checkUpdateButton);
 	$("#uploadProfileBtn").click(uploadImage);
 	$("#deleteProfileBtn").click(deleteImage);
 });
 
 function checkUpdateButton() {
-	if ($("#accountEmail").val()&&$("#accountPassword").val()&&$("#accountPassword").val()==$("#accountConfirmPassword").val()) {
+	if ($("#accountEmail").val()&&$("#accountPassword").val()&&$("#accountPassword").val()) {
 		$("#accountUpdateBtn").prop("disabled", false);
 	}
 	else {

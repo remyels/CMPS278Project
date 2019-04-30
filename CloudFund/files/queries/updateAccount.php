@@ -11,17 +11,9 @@ try {
 		&&isset($_REQUEST['id'])&&!empty($_REQUEST['id'])) {
 		
 		$verifyEmail  = preg_match("/^\w+@[A-Za-z0-9]+(\.[A-Za-z0-9]+)+$/", $_REQUEST['email']);
-		$verifyLength = strlen($_REQUEST['password']) >= 8;
-		$verifySymb = preg_match("/[-!\$%\^&*()_+|~=`\{\}\[\]:\";'<>?,\.\/@]/", $_REQUEST['password']);
-		$verifyNum = preg_match("/\d/", $_REQUEST['password']);
-		$verifyCapital = preg_match("/[A-Z]/", $_REQUEST['password']);
-		$verifyPass = $verifyLength && $verifySymb && $verifyNum && $verifyCapital;
 		
 		if (!$verifyEmail) {
 			echo "<span style='color: red'>Invalid email format!</span>";
-		}
-		else if (!$verifyPass) {
-			echo "<span style='color: red'>Invalid password format!</span>";
 		}
 		else {					
 			$email = $db->quote($_REQUEST['email']);
@@ -31,16 +23,25 @@ try {
 			$password = $db->quote($password);
 			$personalinformation = $db->quote($_REQUEST['personalinformation']);
 			$professionalinformation = $db->quote($_REQUEST['professionalinformation']);
-
-			$query = "UPDATE user SET Email = $email, Password = $password, PersonalInfo = $personalinformation, ProfessionalInfo = $professionalinformation WHERE UserID = $userid;";
 			
-			$exec = $db->exec($query);
+			$query = $db->prepare("SELECT COUNT(*) count FROM user WHERE UserID = $userid AND Password = $password;");
+			$query->execute();
+			$row = $query->fetch();
 			
-			if ($exec) {
-				echo "<span style='color: green'>User information updated successfully!</span>";
+			if ($row['count']==0) {
+				echo "<span style='color: red'>Wrong password!</span>";
 			}
 			else {
-				echo "<span style='color: red'>Something wrong happened on the server-side of things!</span>";
+				$query = "UPDATE user SET Email = $email, Password = $password, PersonalInfo = $personalinformation, ProfessionalInfo = $professionalinformation WHERE UserID = $userid;";
+				
+				$exec = $db->exec($query);
+				
+				if ($exec) {
+					echo "<span style='color: green'>User information updated successfully!</span>";
+				}
+				else {
+					echo "<span style='color: red'>Something wrong happened on the server-side of things!</span>";
+				}
 			}
 		}
 	}
