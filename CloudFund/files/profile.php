@@ -2,6 +2,11 @@
 <html>
 <head>
     <?php include 'styles.php'; ?>
+	<script
+		src="https://code.jquery.com/jquery-3.4.0.min.js"
+		integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+		crossorigin="anonymous">
+	</script>
 	<style>
 		blockquote .small:before, blockquote footer:before, blockquote small:before {
 			content: "";
@@ -16,6 +21,7 @@
 		}
 	</style>
 	<script src="static/profile.js"></script>
+	
 </head>
 <body>
 
@@ -131,16 +137,67 @@
 								</div>
 								<div class="tab-pane fade" id="panel-567649">
 													 <div class="row clearfix">
-					<div class="col-md-2 column"></div>
-					<div class="col-md-8 column">
-						<img alt="140x140" src="http://lorempixel.com/140/140/" /><img alt="140x140" src="http://lorempixel.com/140/140/" /><img alt="140x140" src="http://lorempixel.com/140/140/" /><img alt="140x140" src="http://lorempixel.com/140/140/" />
-					</div>
-					<div class="col-md-2 column"></div>
-				</div>
+					
+					<div class="col-md-12 column">
+						
+					
+					<div class="container"> 
+						<div class="container">
+						<?php
+							$uservisited = $db->quote($_GET['UserID']);
+							$query = "SELECT *, posttype.type AS PostType FROM post, posttype, user WHERE post.userid = $uservisited AND post.userid = user.userid AND posttypeid = post.type;";
+							$rows = $db->query($query);
+							foreach($rows as $row){
+								if($row['PostType'] == "Text"){
+								?>
+									<div class="well">
+										<div class="media">
+											<p class="text-left"><img width="30px" height="30px" src="cutefatcat.jpg" alt="Cute fat cat"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+											<div class="media-body">
+											  <p> <?= $row['Content'] ?></p>
+												<ul class="list-inline list-unstyled">
+													<li><span><i class="fas fa-thumbs-up"></i> Like</span></li>
+													<li>|</li>
+													<li><span><i class="fas fa-thumbs-down"></i> Dislike</span></li>
+													<li>|</li>
+													<li><span><i class="fas fa-comments"></i> Comment</span></li>
+													<li class="pull-right"><?=$row['DateTimeOfPost']?></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								<?php
+								} else if($row['PostType'] == "Image") { ?>
+									<div class="well">
+										<div class="media">
+											<p class="text-left"><img width="30px" height="30px" src="cutefatcat.jpg" alt="Cute fat cat"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+											<div class="media-body">
+												<a style="margin-right: 10px; pointer-events: none; cursor: default;" class="pull-left">
+												<img class="media-object" src="http://placekitten.com/150/150">
+												</a>
+												<p><?= $row['Content'] ?></p>
+												<ul class="list-inline list-unstyled">
+													<li><span><i class="fas fa-thumbs-up"></i> Like</span></li>
+													<li>|</li>
+													<li><span><i class="fas fa-thumbs-down"></i> Dislike</span></li>
+													<li>|</li>
+													<li><span><i class="fas fa-comments"></i> Comment</span></li>
+													<li class="pull-right"><?=$row['DateTimeOfPost']?></li>
+												</ul>
+										   </div>
+										</div>
+									  </div>
+								<?php
+								}
+								//check 3rd type for video
+							} ?>	
+							</div>
+						</div>
+								</div>
+								</div>
 								</div>
 							</div>
 						</div>
-						
 					</div>
 				</div>
 			</div>
