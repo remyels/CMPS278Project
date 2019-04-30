@@ -1,0 +1,14 @@
+<?php
+	$currentUserId = $db->quote($_SESSION['LOGGED_IN_USER_ID']);
+	$query = "SELECT USERID, FIRST_NAME, LAST_NAME FROM user WHERE CREATEDBY = $currentUserId";
+	$rows = $db->query($query);
+	if($rows->rowCount() > 0){
+		foreach($rows as $row){
+		?>
+		<option value="<?=$row['USERID']?>">
+			<?=$row['FIRST_NAME']?> <?=$row['LAST_NAME']?>
+		</option>
+		<?php
+		}
+	}
+?>
