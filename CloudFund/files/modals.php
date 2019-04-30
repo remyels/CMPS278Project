@@ -53,6 +53,20 @@
 									type="text" id="inputSignUpLastName" name="inputSignUpLastName" />
 						</div>
 						<div class="form-group">
+							<label for="inputSignUpGender">Gender:</label>
+							<div id="inputSignUpGender">
+								<label class="radio-inline">
+								  <input type="radio" name="gender" value="Male" checked>Male
+								</label>
+								<label class="radio-inline">
+								  <input type="radio" name="gender" value="Female">Female
+								</label>
+								<label class="radio-inline">
+								  <input type="radio" name="gender" value="Other">Other
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
 							<label for="inputSignUpEmailAddress">Email address:</label>
 							<input class="form-control" placeholder="Email address "
 									type="text" id="inputSignUpEmailAddress" name="inputSignUpEmailAddress" />

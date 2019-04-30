@@ -9,7 +9,8 @@ $(document).ready(function() {
 $("#signUpBtn").on("click", function() {
 	$("#signUpResult").load("queries/signUpSendMail.php", {
 		firstname: $("#inputSignUpFirstName").val(), 
-		lastname: $("#inputSignUpLastName").val(), 
+		lastname: $("#inputSignUpLastName").val(),
+		gender: $("input[name='gender']:checked").val(),
 		email: $("#inputSignUpEmailAddress").val(), 
 		password: $("#inputSignUpPassword").val(), 
 	});

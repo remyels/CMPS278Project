@@ -7,7 +7,8 @@ try {
 	if (isset($_REQUEST['email'])&&!empty($_REQUEST['email'])
 		&&isset($_REQUEST['password'])&&!empty($_REQUEST['password'])
 		&&isset($_REQUEST['firstname'])&&!empty($_REQUEST['firstname'])
-		&&isset($_REQUEST['lastname'])&&!empty($_REQUEST['lastname'])) {
+		&&isset($_REQUEST['lastname'])&&!empty($_REQUEST['lastname'])
+		&&isset($_REQUEST['gender'])&&!empty($_REQUEST['gender'])) {
 
 		$verifyEmail  = preg_match("/^\w+@[A-Za-z0-9]+(\.[A-Za-z0-9]+)+$/", $_REQUEST['email']);
 		$verifyLength = strlen($_REQUEST['password']) >= 8;
@@ -50,11 +51,12 @@ try {
 
 				$password = openssl_digest($_REQUEST['password'], 'sha512');
 				$password = $db->quote($password);
-
+				
+				$gender = $db->quote($_REQUEST['gender']);
 				$firstname = $db->quote($_REQUEST['firstname']);
 				$lastname = $db->quote($_REQUEST['lastname']);
 
-				$query = "INSERT INTO user(FirstName, LastName, UserType, Email, Password, Hash) VALUES ($firstname, $lastname, 1, $email, $password, $hashesc);";
+				$query = "INSERT INTO user(FirstName, LastName, UserType, Gender, Email, Password, Hash) VALUES ($firstname, $lastname, 1, $gender, $email, $password, $hashesc);";
 				
 				$exec = $db->exec($query);
 

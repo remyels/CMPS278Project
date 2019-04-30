@@ -68,7 +68,7 @@
 						<blockquote>
 							<p>
 								<?= $profile['FirstName'] ?> <?= $profile['LastName'] ?>
-							</p> <small>Gender</small><small>Age</small>
+							</p> <small><?= $profile['Gender'] ?></small>
 						</blockquote>
 					</div>
 					<div class="col-md-2 column">
