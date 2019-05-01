@@ -44,9 +44,37 @@
 				  <div class="form-group undo">
 				  <p>Select a friend to send a message to:</p>
 					<p>To:</p><select class="form-control" id="toUser" >
-					<option value="1">First1 Last1</option>
-					<option value="2">First2 Last2</option>
-					<option value="3">First3 Last3</option>
+				<?php
+					
+					include "../connect/connectPDO.php";
+				
+					$currentUserId = $db->quote($_SESSION['LoggedInUserID']);
+					$query = "SELECT UserIDFrom, UserIDTo FROM isfriendof WHERE ((UserIDFrom = $currentUserId AND accepted = 1) OR (UserIDTo = $currentUserId AND accepted = 1));";
+					$rows = $db->query($query);
+					if($rows->rowCount() > 0){
+						foreach($rows as $row){
+							$user;
+							if ($row['UserIDFrom']==$_SESSION['LoggedInUserID']) {
+								$user = $row['UserIDTo'];
+							}
+							else {
+								$user = $row['UserIDFrom'];
+							}
+							$query = $db->prepare("SELECT FirstName, LastName FROM user WHERE UserID = $user;");
+							$query->execute();
+							$res = $query->fetch();
+							
+						?>
+						<option value="<?=$user?>">
+							<?=$res['FirstName']?> <?=$res['LastName']?>
+						</option>
+					<?php }
+					} 
+					else { ?>
+						<option value="">You have no friends!</option>
+					<?php }
+					
+				?>
 					</select>
 				  </div>
 				  <div class="form-group">

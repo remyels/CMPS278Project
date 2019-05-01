@@ -1,15 +1,18 @@
 $(document).ready(function() {
     $("#compose-textarea").wysihtml5();
-	$("#compose-textarea, #inputSubject").change(checkSendBtn);
+	$("#inputSubject").bind('change keyup', checkSendBtn);
 	$("#sendBtn").click(sendMsg);
 });
 
-function checkSendBtn() {			
+function checkSendBtn() {
 	$("#send-icon").attr("class", "fa fa-paper-plane");
-	$("#send-message").html("Send");
+	$("#send-message").html(" Send");
 	$("#sendBtn").attr("class", "btn btn-primary");
-	if ($("#compose-textarea").val()&&$("#inputSubject").val()) {
+	if ($("#toUser option:selected").val()&&$("#inputSubject").val()) {
 		$("#sendBtn").prop("disabled", false);
+	}
+	else {
+		$("#sendBtn").prop("disabled", true);
 	}
 }
 
@@ -17,14 +20,13 @@ function sendMsg() {
 	$.ajax({
 		url: "queries/sendMessage.php",
 		type: "post",
-		data: {to: $("#toUser option:selected").val(), subject: $("#inputSubject").val(), message: $("#compose-textarea").val(), datetime: moment().format("YYYY-MM-DD HH:mm:ss");},
+		data: {to: $("#toUser option:selected").val(), subject: $("#inputSubject").val(), message: $("#compose-textarea").val(), datetime: moment().format("YYYY-MM-DD HH:mm:ss")},
 		success: function(response) {
 			if (response) {
 				$("#sendBtn").prop("disabled", true);
-				$("#compose-textarea").val("");
 				$("#inputSubject").val("");
 				$("#send-icon").attr("class", "fa fa-check");
-				$("#send-message").html("Sent!");
+				$("#send-message").html(" Sent!");
 				$("#sendBtn").attr("class", "btn btn-success");
 			}
 		},

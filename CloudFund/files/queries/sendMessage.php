@@ -1,8 +1,8 @@
 <?php 
 
-session_start();
+include ("../../connect/connectPDO.php");
 
-include "../../connect/connectPDO";
+session_start();
 
 if (isset($_POST['to'])&&!empty($_POST['to'])
 	&&isset($_POST['subject'])&&!empty($_POST['subject'])
