@@ -104,7 +104,7 @@
 							
 							<?php } else {
 							?> 
-							<a href="compose.php?UserID=<?= $profileid ?>">
+							<a href="compose.php?UserID=<?= $_GET['UserID'] ?>">
 							 <button class="btn btn-default btn-block" type="button">
 								Message
 							 </button>
