@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	checkIfPosted();
     $("#compose-textarea").wysihtml5();
 	$("#inputSubject").bind('change keyup', checkSendBtn);
 	$("#sendBtn").click(sendMsg);
@@ -35,4 +36,10 @@ function sendMsg() {
 		   console.log(errorThrown);
         },
 	})
+}
+
+function checkIfPosted() {
+	if ($("#PostedUserID").val()) {
+		$("#toUser").val($("#PostedUserID").val());
+	}
 }

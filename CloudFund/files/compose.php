@@ -42,6 +42,11 @@
 				<!-- /.box-header -->
 				<div class="box-body">
 				  <div class="form-group undo">
+				  <?php if (isset($_GET['UserID'])) { ?>
+				  <input id="PostedUserID" type="hidden" value="<?= $_GET['UserID']?>"/>
+				  <?php } else { ?>
+				  <input id="PostedUserID" type="hidden" value=""/>
+				  <?php } ?>
 				  <p>Select a friend to send a message to:</p>
 					<p>To:</p><select class="form-control" id="toUser" >
 				<?php
