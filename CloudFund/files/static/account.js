@@ -6,8 +6,6 @@ $(document).ready(function() {
 			$(this).prev('label').text(labelText);
 		})
 	});
-	$("#profile-picture").css("height", 100);
-	$("#profile-picture").css("width", 100);
 	$("#accountEmail, #accountPersonalInformation, #accountProfessionalInformation, #accountPassword").change(checkUpdateButton);
 	$("#uploadProfileBtn").click(uploadImage);
 	$("#deleteProfileBtn").click(deleteImage);

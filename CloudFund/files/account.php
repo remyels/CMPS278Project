@@ -37,9 +37,9 @@
 			  updateSession($row);
 			  
 			  if (!$_SESSION['UserRow']['ProfilePicture']) { ?>
-              <img id="profile-picture" class="thumbnail box-center margin-top-20" alt="No image" src="static/images/emptyuser.jpg">
+              <img id="profile-picture" width="100" height="100" class="thumbnail box-center margin-top-20" alt="No image" src="static/images/emptyuser.jpg">
 			  <?php } else { ?>
-			  <img id="profile-picture" class="haspic thumbnail box-center margin-top-20" alt="No image" src="<?= $_SESSION['UserRow']['ProfilePicture'] ?>">
+			  <img id="profile-picture" width="100" height="100" class="haspic thumbnail box-center margin-top-20" alt="No image" src="<?= $_SESSION['UserRow']['ProfilePicture'] ?>">
 			  <?php } ?>
             </div>
             <p>

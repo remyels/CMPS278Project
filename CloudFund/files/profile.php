@@ -20,6 +20,19 @@
 			border-top: 1px solid #050505;
 		}
 		
+		.undo {
+			color: black;
+		}
+		
+		.media-body a {
+			color: inherit;
+			text-decoration: inherit;
+			cursor: pointer;
+		}
+		
+		.clicked {
+			color: darkred;
+		}
 		
 	</style>
 	<script src="static/profile.js"></script>
@@ -70,7 +83,11 @@
 				<input id="ProfileID" type="hidden" value="<?=isset($_GET['UserID'])?>"/>
 				<div class="row clearfix well">
 					<div class="col-md-2 column">
-						<img class="img-thumbnail" alt="140x140" src="http://lorempixel.com/140/140/" />
+						<?php if ($profile['ProfilePicture']=="") { ?> 
+						<img class="img-thumbnail" height="140px" width="140px" src="static/images/emptyuser.jpg" />
+						<?php } else { ?>
+						<img class="img-thumbnail" height="140px" width="140px" src="<?=$profile['ProfilePicture']?>"/>
+						<?php } ?>
 					</div>
 					<div class="col-md-8 column">
 						<blockquote>
@@ -130,12 +147,12 @@
 										<div class="col-md-12 column">
 											<p>
 												<strong>Personal information</strong><br/>
-												<?php if ($profile['PersonalInfo']) { ?> <?= $profile['PersonalInfo'] ?> <?php } else { ?> None specified <?php } ?>
+												<span class="undo"><?php if ($profile['PersonalInfo']) { ?> <?= $profile['PersonalInfo'] ?> <?php } else { ?> None specified <?php } ?></span>
 											</p>
 											<hr/>
 											<p>
 												<strong>Professional information</strong><br/>
-												<?php if ($profile['ProfessionalInfo']) { ?> <?= $profile['ProfessionalInfo'] ?> <?php } else { ?> None specified <?php } ?> 
+												<span class="undo"><?php if ($profile['ProfessionalInfo']) { ?> <?= $profile['ProfessionalInfo'] ?> <?php } else { ?> None specified <?php } ?></span>
 											</p>
 										</div>
 									</div>
@@ -153,20 +170,42 @@
 						$query = "SELECT *, posttype.type AS PostType FROM post, posttype, user WHERE post.userid = $uservisited AND post.userid = user.userid AND posttypeid = post.type;";
 						$rows = $db->query($query);
 						foreach($rows as $row){
+							$postid = $row['PostID'];
+							$query = $db->query("SELECT * FROM reactpost WHERE PostID = $postid;");
+							$numlikes = 0;
+							$numdislikes = 0;
+							foreach($query as $res) {
+								if ($res['IsLike']==0) {
+									$numdislikes = $numdislikes+1;
+								}
+								else {
+									$numlikes = $numlikes+1;
+								}
+							}
+							
+							$query = $db->prepare("SELECT COUNT(*) count FROM comment WHERE PostID = $postid;");
+							$query->execute();
+							$res = $query->fetch();
+							
+							$numcomments = $res['count'];
 							if($row['PostType'] == "Text"){
 							?>
 								<div class="well">
 									<div class="media">
-										<p class="text-left"><img width="30px" height="30px" src="cutefatcat.jpg" alt="Cute fat cat"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<?php if ($profile['ProfilePicture']=="") { ?> 
+										<p class="text-left"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="No profile picture set"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<?php } else { ?>
+										<p class="text-left"><img width="30px" height="30px" src="<?=$profile['ProfilePicture']?>" alt="Profile picture"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<?php } ?>
 										<div class="media-body">
-										  <p> <?= $row['Content'] ?></p>
-											<ul class="list-inline list-unstyled">
-												<li><span><i class="fas fa-thumbs-up"></i> Like</span></li>
+										  <p class="undo"> <?= $row['Content'] ?></p>
+											<ul class="text-left list-inline list-unstyled">
+												<li><a id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
 												<li>|</li>
-												<li><span><i class="fas fa-thumbs-down"></i> Dislike</span></li>
+												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
 												<li>|</li>
-												<li><span><i class="fas fa-comments"></i> Comment</span></li>
-												<li class="pull-right"><?=$row['DateTimeOfPost']?></li>
+												<li><a id="anchorcomment<?=$row['PostID']?>"><i class="fa fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
+												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
 											</ul>
 										</div>
 									</div>
@@ -181,13 +220,13 @@
 											<img class="media-object" src="http://placekitten.com/150/150">
 											</a>
 											<p><?= $row['Content'] ?></p>
-											<ul class="list-inline list-unstyled">
-												<li><span><i class="fas fa-thumbs-up"></i> Like</span></li>
+											<ul class="undo list-inline list-unstyled">
+												<li><a id="anchorlike<?=$row['PostID']?>"><i class="fas fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
 												<li>|</li>
-												<li><span><i class="fas fa-thumbs-down"></i> Dislike</span></li>
+												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fas fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
 												<li>|</li>
-												<li><span><i class="fas fa-comments"></i> Comment</span></li>
-												<li class="pull-right"><?=$row['DateTimeOfPost']?></li>
+												<li><a id="anchorcomment<?=$row['PostID']?>"><i class="fas fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
+												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
 											</ul>
 									   </div>
 									</div>
