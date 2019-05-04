@@ -31,7 +31,7 @@
 		
 	</style>
 	<script src="static/profile.js"></script>
-	
+	<link rel="stylesheet" type="text/css" href="static/comments.css"></script>
 </head>
 <body>
 
@@ -226,12 +226,60 @@
 														<li>|</li>
 												<?php }} ?>
 												
-												<li><a id="anchorcomment<?=$row['PostID']?>"><i class="fa fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
+												<li><a onclick="collapse(this)" id="anchorcomment<?=$row['PostID']?>"><i class="fa fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
 												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
 											</ul>
 										</div>
 									</div>
 								</div>
+							</div>
+						</div>
+						
+						<!-- COMMENTS START HERE -->
+						
+						<div class="row clearfix">
+						
+						<div class="col-md-1"></div>
+						
+						<div class="col-md-10 column">
+
+						<div class="container-fluid">
+						
+						<div class="collapse" id="commentbox<?=$row['PostID']?>">
+							<div class="well">
+                                <div class="media">
+										<p class="text-left"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="No profile picture set"> Random guy</p>
+										<div class="media-body">
+										  <p class="undo"> This is a hypothetical content times </p>
+											<ul class="text-left list-inline list-unstyled">
+												<li><a id="anchorlike123"><i class="fa fa-thumbs-up"></i> Like (nobody likes u)</a></li>
+												<li>|</li>
+												<li><a id="anchordislike123"><i class="fa fa-thumbs-down"></i> Dislike (literally everyone)</a></li>
+												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
+											</ul>
+										</div>
+									</div> 
+								</div>
+								<div class="well">
+									<div class="media">
+										<p class="text-left"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="No profile picture set"> Random guy 2</p>
+										<div class="media-body">
+										  <p class="undo"> This is a hypothetical content times numero dos </p>
+											<ul class="text-left list-inline list-unstyled">
+												<li><a id="anchorlike1234"><i class="fa fa-thumbs-up"></i> Like (nobody likes u)</a></li>
+												<li>|</li>
+												<li><a id="anchordislike1234"><i class="fa fa-thumbs-down"></i> Dislike (literally everyone)</a></li>
+												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
+											</ul>
+										</div>
+									</div> 
+								</div>
+                        </div>
+								</div>
+								</div>
+								</div>
+								
+						<!-- COMMENTS END HERE -->
 							<?php
 							} else if($row['PostType'] == "Image") { ?>
 								<div class="well">
@@ -280,30 +328,12 @@
 							//check 3rd type for video
 						} ?>	
 						</div>
-
-								</div>
-								</div>
-								</div>
-								<div class="tab-pane fade" id="special-panel-123456">
-									 <div class="row clearfix">
-										<div class="col-md-12 column">
-											<p>
-												<strong>Placeholder</strong><br/>
-												<span class="undo">This is a placeholder for now</span>
-											</p>
-											<hr/>
-											<p>
-												<strong>Placeholder dos</strong><br/>
-												<span class="undo">This is also a placeholder for now</span>
-											</p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+</div>
 		
 	<?php }}} ?>
 </div>

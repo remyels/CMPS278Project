@@ -2,8 +2,6 @@ $(document).ready(function() {
 	$("#addFriendBtn").click(addFriend);
 	$("a[id^='anchorlike']").click(likePost);
 	$("a[id^='anchordislike']").click(dislikePost);
-	$("a[id^='anchorcomment']").click(commentPost);
-	$('.nav-tabs a[href^="#panel-"]').click(hideComments);
 });
 
 function addFriend() {
@@ -111,13 +109,6 @@ function dislikePost() {
 	});
 }
 
-function commentPost() {
-	var id = $(this).attr("id").replace("anchorcomment", "");
-	$('.nav-tabs a[href="#special-panel-123456"]').tab('show');
-	$("#comments-tab").removeClass("hidden");
-	$("#comments-tab").addClass("active");
-}
-
-function hideComments() {
-	$("#comments-tab").addClass("hidden");
+function collapse(elem) {
+	$("#"+$(elem).attr('id').replace("anchorcomment", "commentbox")).collapse("toggle");
 }
