@@ -2,11 +2,6 @@
 <html>
 <head>
     <?php include 'styles.php'; ?>
-	<script
-		src="https://code.jquery.com/jquery-3.4.0.min.js"
-		integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
-		crossorigin="anonymous">
-	</script>
 	<style>
 		blockquote .small:before, blockquote footer:before, blockquote small:before {
 			content: "";
@@ -31,7 +26,7 @@
 		}
 		
 		.clicked {
-			color: darkred;
+			color: darkred !important;
 		}
 		
 	</style>
@@ -140,6 +135,9 @@
 								<li>
 									<a href="#panel-567649" data-toggle="tab" style="background: #e3e3e3;">Posts</a>
 								</li>
+								<li id="comments-tab" class="hidden">
+									<a href="#special-panel-123456" data-toggle="tab" style="background: #e3e3e3;">Comments</a>
+								</li>
 							</ul>
 							<div style="border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; background: #e3e3e3; padding: 10px;" class="tab-content">
 								<div class="tab-pane fade in active" id="panel-200304">
@@ -167,7 +165,7 @@
 					<div class="container-fluid">
 					<?php
 						$uservisited = $db->quote($_GET['UserID']);
-						$query = "SELECT *, posttype.type AS PostType FROM post, posttype, user WHERE post.userid = $uservisited AND post.userid = user.userid AND posttypeid = post.type;";
+						$query = "SELECT *, posttype.type AS PostType FROM post, posttype, user WHERE post.userid = $uservisited AND post.userid = user.userid AND posttypeid = post.type ORDER BY DateTimeOfPost DESC;";
 						$rows = $db->query($query);
 						foreach($rows as $row){
 							$postid = $row['PostID'];
@@ -200,10 +198,34 @@
 										<div class="media-body">
 										  <p class="undo"> <?= $row['Content'] ?></p>
 											<ul class="text-left list-inline list-unstyled">
+												<?php 
+													// need to check whether it is already liked or disliked or neither
+													$query = $db->prepare("SELECT * FROM reactpost WHERE ReacterID = $currentuserid AND PostID = $postid;");
+													$query->execute();
+													$numrows = $query->rowCount();
+													
+													// this means the user has never reacted to this post
+													if ($numrows == 0) { 
+												?>
 												<li><a id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
 												<li>|</li>
 												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
 												<li>|</li>
+												<?php } else {
+													$res = $query->fetch();
+													
+													if ($res['IsLike']==1) { ?>
+														<li><a class="clicked" id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+														<li>|</li>
+														<li><a id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+														<li>|</li>
+													<?php } else { ?>
+														<li><a id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+														<li>|</li>
+														<li><a class="clicked" id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+														<li>|</li>
+												<?php }} ?>
+												
 												<li><a id="anchorcomment<?=$row['PostID']?>"><i class="fa fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
 												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
 											</ul>
@@ -221,10 +243,32 @@
 											</a>
 											<p><?= $row['Content'] ?></p>
 											<ul class="undo list-inline list-unstyled">
+											<?php 
+													// need to check whether it is already liked or disliked or neither
+													$query = $db->prepare("SELECT * FROM reactpost WHERE ReacterID = $currentuserid AND PostID = $postid;");
+													$query->execute();
+													$numrows = $query->rowCount();
+													
+													// this means the user has never reacted to this post
+													if ($numrows == 0) { ?>
 												<li><a id="anchorlike<?=$row['PostID']?>"><i class="fas fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
 												<li>|</li>
 												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fas fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
 												<li>|</li>
+													<?php } else {
+													$res = $query->fetch();
+		
+													if ($res['IsLike']==1) { ?>
+												<li><a class="clicked" id="anchorlike<?=$row['PostID']?>"><i class="fas fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+												<li>|</li>
+												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fas fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+												<li>|</li>
+													<?php } else { ?>
+													<li><a id="anchorlike<?=$row['PostID']?>"><i class="fas fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+													<li>|</li>
+													<li><a class="clicked" id="anchordislike<?=$row['PostID']?>"><i class="fas fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+													<li>|</li>
+													<?php }} ?>
 												<li><a id="anchorcomment<?=$row['PostID']?>"><i class="fas fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
 												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
 											</ul>
@@ -239,6 +283,21 @@
 
 								</div>
 								</div>
+								</div>
+								<div class="tab-pane fade" id="special-panel-123456">
+									 <div class="row clearfix">
+										<div class="col-md-12 column">
+											<p>
+												<strong>Placeholder</strong><br/>
+												<span class="undo">This is a placeholder for now</span>
+											</p>
+											<hr/>
+											<p>
+												<strong>Placeholder dos</strong><br/>
+												<span class="undo">This is also a placeholder for now</span>
+											</p>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>

@@ -2,8 +2,6 @@
 
 include '../../connect/connectPDO.php';
 
-print_r($_POST);
-
 $id = $db->quote($_POST['id']);
 
 $query = $db->prepare("SELECT ProfilePicture FROM user WHERE UserID = $id");
