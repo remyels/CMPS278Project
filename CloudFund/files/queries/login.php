@@ -21,13 +21,17 @@ try {
 
 			$active = $row['Active'];
 			if ($active == 1) {
+				// make the user online
+				$id = $db->quote($row['UserID']);
+				$query = $db->exec("UPDATE user SET Online = 1 WHERE UserID = $id;");
 				$_SESSION["LoggedInUserID"] = $row['UserID'];
 				$_SESSION["LoggedInUserType"] = $row['UserType'];
 				$_SESSION["FirstName"] = $row['FirstName'];
 				$_SESSION["LastName"] = $row['LastName'];
 				$_SESSION["UserRow"] = $row;
 
-				echo "<script>window.location =  'index.php'";
+				if ($query) echo "<script>window.location =  'index.php'";
+				else echo "<span style='color: red'>Database error, please try again later!</span>";
 			}
 			else {
 				// A verified account was found
