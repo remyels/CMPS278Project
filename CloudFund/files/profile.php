@@ -158,11 +158,7 @@
 								<div class="tab-pane fade" id="panel-567649">
 													 <div class="row clearfix">
 					
-					<div class="col-md-12 column">
 						
-					
-
-					<div class="container-fluid">
 					<?php
 						$uservisited = $db->quote($_GET['UserID']);
 						$query = "SELECT *, posttype.type AS PostType FROM post, posttype, user WHERE post.userid = $uservisited AND post.userid = user.userid AND posttypeid = post.type ORDER BY DateTimeOfPost DESC;";
@@ -186,6 +182,10 @@
 							$res = $query->fetch();
 							
 							$numcomments = $res['count'];
+							?>
+							<div class="col-md-12 column">
+							<div class="container-fluid">
+							<?php
 							if($row['PostType'] == "Text"){
 							?>
 								<div class="well">
@@ -274,7 +274,7 @@
 										</div>
 									</div> 
 								</div>
-                        </div>
+						</div>
 								</div>
 								</div>
 								</div>
@@ -282,6 +282,7 @@
 						<!-- COMMENTS END HERE -->
 							<?php
 							} else if($row['PostType'] == "Image") { ?>
+							
 								<div class="well">
 									<div class="media">
 										<p class="text-left"><img width="30px" height="30px" src="cutefatcat.jpg" alt="Cute fat cat"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
