@@ -4,6 +4,13 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="static/navbar.js"></script>
 	</head>
+	<style>
+		.scrollable-menu {
+			height: auto;
+			max-height: 200px;
+			overflow-x: hidden;
+		}
+	</style>
 	
 	<body>
 		<?php session_start(); 
@@ -28,6 +35,35 @@
 				<?php if (isset($_SESSION['LoggedInUserID'])) { ?> 
 					<li><a href="requests.php">Requests</a></li>
 					<li><a href="messages.php">Messages</a></li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Chat
+						<span class="caret"></span></a>
+						<ul class="dropdown-menu scrollable-menu">
+							<?php 
+							
+							$currentuserid = $_SESSION['LoggedInUserID'];
+							
+							$query = $db->prepare("SELECT ProfilePicture, UserID, FirstName, LastName FROM user WHERE UserID IN (SELECT UserIDFrom FROM isfriendof WHERE UserIDTo = $currentuserid AND accepted = 1 UNION SELECT UserIDTo FROM isfriendof WHERE UserIDFrom = $currentuserid AND accepted = 1) AND Online = 1;");
+							$query->execute();
+							$numrows = $query->rowCount();			
+							if ($numrows==0) {
+							?>
+								<li style="text-align: center; -webkit-user-select: none;"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="No profile picture set">Nobody is online!</li>
+							<?php } else {
+								
+							$rows = $query->fetchAll();
+							
+							foreach ($rows as $row) { 
+								if ($row['ProfilePicture']=="") {
+							?>
+								<li><a href="chat.php?UserID=<?=$row['UserID']?>"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="No profile picture set"> <?=$row['FirstName']?> <?=$row['LastName']?></a></li>
+								<?php } else { ?>
+								<li><a href="chat.php?UserID=<?=$row['UserID']?>"><img width="30px" height="30px" src="<?=$row['ProfilePicture']?>" alt="Profile picture"> <?=$row['FirstName']?> <?=$row['LastName']?></a></li>
+									
+								<?php }
+							}} ?>
+						</ul>
+					</li>
 				<?php } ?>
 				<li><a href="about.php">About</a></li>
 				<li><a href="contact.php">Contact us</a></li>

@@ -71,9 +71,9 @@
                 <li><a href="#" class='glyphicon glyphicon-user'></a></li>
                 <li><a href="#" class='glyphicon glyphicon-map-marker'></a></li>
 				<label>Post Privacy:</label>
-				<li><input type="radio" name="privacy" value="1"> Public</li>
-				<li><input type="radio" name="privacy" value="2"> Friends Only</li>
-				<li><input type="radio" name="privacy" value="3"> Private</li>
+				<li><label><input type="radio" name="privacy" value="1" checked="checked"> Public</label></li>
+				<li><label><input type="radio" name="privacy" value="2"> Friends Only</label></li>
+				<li><label><input type="radio" name="privacy" value="3"> Private</label></li>
                 <li class='pull-right'><a id="postStatus" href="#" class='btn btn-primary btn-xs'>Post</a></li>
             </ul>
         </form>
@@ -87,7 +87,7 @@
 					<div class="col-md-offset-3 col-md-6 col-xs-12">
 					<?php
 						$userid = $db->quote($_SESSION['LoggedInUserID']);
-						$query = "SELECT *, posttype.type AS PostType FROM post, posttype, user WHERE post.UserID = user.UserID AND post.Type = posttype.PostTypeID AND post.UserID IN (SELECT isfriendof.UserIDFROM FROM isfriendof WHERE isfriendof.accepted = 1 AND isfriendof.UserIDTo = $userid) ORDER BY DateTimeOfPost DESC";
+						$query = "SELECT *, posttype.type AS PostType FROM post, posttype, user WHERE post.UserID = user.UserID AND post.Type = posttype.PostTypeID AND post.UserID IN (SELECT isfriendof.UserIDFrom FROM isfriendof WHERE isfriendof.accepted = 1 AND isfriendof.UserIDTo = $userid UNION SELECT isfriendof.UserIDTo FROM isfriendof WHERE isfriendof.accepted = 1 AND isfriendof.UserIDFrom = $userid) ORDER BY DateTimeOfPost DESC";
 						$rows = $db->query($query);
 						foreach($rows as $row){
 							$postid = $row['PostID'];
