@@ -29,6 +29,12 @@
 			color: darkred !important;
 		}
 		
+		textarea:focus {   
+			border-color: rgba(229, 103, 23, 0.8);
+			box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075) inset, 0 0 8px rgba(229, 103, 23, 0.6);
+			outline: 0 none;
+		}
+		
 	</style>
 	<script src="static/profile.js"></script>
 	<link rel="stylesheet" type="text/css" href="static/comments.css"></script>
@@ -246,30 +252,76 @@
 						<div class="container-fluid">
 						
 						<div class="collapse" id="commentbox<?=$row['PostID']?>">
+							
+						<?php
+						
+						$postid= $row['PostID'];
+						
+						$query = "SELECT * FROM comment JOIN user ON CommentPosterID = UserID WHERE PostID = $postid;"; 
+						
+						$comments = $db->query($query);
+						
+						foreach($comments as $comment) { ?>
+						
 							<div class="well">
                                 <div class="media">
-										<p class="text-left"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="No profile picture set"> Random guy</p>
+										<?php if ($comment['ProfilePicture']!="") { ?>
+										<p class="text-left"><img width="30px" height="30px" src="<?=$comment['ProfilePicture']?>" alt="Profile picture"> <?=$comment['FirstName']?> <?=$comment['LastName']?></p>
+										<?php } else { ?>
+										<p class="text-left"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="Profile picture"> <?=$comment['FirstName']?> <?=$comment['LastName']?></p>
+										<?php } ?>
 										<div class="media-body">
-										  <p class="undo"> This is a hypothetical content times </p>
+										  <p class="undo"> <?=$comment['Content']?> </p>
 											<ul class="text-left list-inline list-unstyled">
-												<li><a id="anchorlike123"><i class="fa fa-thumbs-up"></i> Like (nobody likes u)</a></li>
+												<?php 
+												
+												// Need to get number of likes and dislikes on this particular comment as well as whether it's liked or not
+												
+												$commentid = $comment['CommentID'];
+												
+												$likes = $db->prepare("SELECT COUNT(*) count FROM reactcomment WHERE IsLike = 1;");
+												$likes->execute();
+												$num_likes = $likes->fetch();
+												$num_likes = $num_likes['count'];
+												
+												$dislikes = $db->prepare("SELECT COUNT(*) count FROM reactcomment WHERE IsLike = 0;");
+												$dislikes->execute();
+												$num_dislikes = $dislikes->fetch();
+												$num_dislikes = $num_dislikes['count'];
+												
+												
+												$userreaction = $db->prepare("SELECT * FROM reactcomment WHERE ReacterID = $currentuserid;");
+												$userreaction->execute();
+												$reactionfound = $userreaction->rowCount();
+												
+												if ($reactionfound==0) { ?>
+												<li><a id="commentanchorlike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="commentnumlikes<?=$comment['CommentID']?>"><?=$num_likes?></span>)</a></li>
 												<li>|</li>
-												<li><a id="anchordislike123"><i class="fa fa-thumbs-down"></i> Dislike (literally everyone)</a></li>
-												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
+												<li><a id="commentanchordislike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="commentnumdislikes<?=$comment['CommentID']?>"><?=$num_dislikes?></span>)</a></li>
+												<?php } else {
+													$reaction = $userreaction->fetch();
+													
+													if ($reaction['IsLike']==1) { ?>
+													<li><a class="clicked" id="commentanchorlike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="commentnumlikes<?=$comment['CommentID']?>"><?=$num_likes?></span>)</a></li>
+													<li>|</li>
+													<li><a id="commentanchordislike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="commentnumdislikes<?=$comment['CommentID']?>"><?=$num_dislikes?></span>)</a></li>										
+													<?php } else { ?>
+													<li><a id="commentanchorlike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="commentnumlikes<?=$comment['CommentID']?>"><?=$num_likes?></span>)</a></li>
+													<li>|</li>
+													<li><a class="clicked" id="commentanchordislike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="commentnumdislikes<?=$comment['CommentID']?>"><?=$num_dislikes?></span>)</a></li>										
+												<?php }}	?>
 											</ul>
 										</div>
 									</div> 
 								</div>
-								<div class="well">
+								<?php } ?>
+								<div id="comment-area<?=$postid?>" class="well">
 									<div class="media">
-										<p class="text-left"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="No profile picture set"> Random guy 2</p>
+										<p class="text-left"><strong>Add a comment</strong></p>
 										<div class="media-body">
-										  <p class="undo"> This is a hypothetical content times numero dos </p>
+										    <textarea id="comment-content<?=$postid?>" class="form-control"></textarea>
 											<ul class="text-left list-inline list-unstyled">
-												<li><a id="anchorlike1234"><i class="fa fa-thumbs-up"></i> Like (nobody likes u)</a></li>
-												<li>|</li>
-												<li><a id="anchordislike1234"><i class="fa fa-thumbs-down"></i> Dislike (literally everyone)</a></li>
-												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
+												<li class="pull-right"><button id="commentBtn<?=$postid?>" style="margin: 10px;" class="btn btn-default" disabled><i class="fa fa-comment"></i> Comment</button></li>
 											</ul>
 										</div>
 									</div> 
