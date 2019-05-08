@@ -29,6 +29,13 @@ try {
 				$_SESSION["FirstName"] = $row['FirstName'];
 				$_SESSION["LastName"] = $row['LastName'];
 				$_SESSION["UserRow"] = $row;
+				
+				// need to check if user was deactivated, if they were, set Deactivated = 0
+				if ($row['Deactivated']==1) {
+					$userid = $row['UserID'];
+					$query = "UPDATE user SET Deactivated = 0 WHERE UserID = $userid;";
+					$db->exec($query);
+				}
 
 				if ($query) echo "<script>window.location =  'index.php'";
 				else echo "<span style='color: red'>Database error, please try again later!</span>";

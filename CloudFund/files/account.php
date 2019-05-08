@@ -4,6 +4,34 @@
 	<?php include "styles.php"; ?>
 	<link rel="stylesheet" type="text/css" href="static/account.css"/>
 	<script type="text/javascript" src="static/account.js"></script>
+	
+	<style>
+	
+	#content .btn-default, .modal .btn-default
+ 
+	{
+	 
+		background-color: #68889E;
+		 
+		color:#FFF;
+		 
+		border-color: #2F3E48;
+	 
+	}
+	 
+	#content .btn-default:hover, #content .btn-default:focus, #content .btn-default:active, #content .btn-default.active, #content .open .dropdown-toggle.btn-default,
+	.modal .btn-default:hover, .modal .btn-default:focus, .modal .btn-default:active, .modal .btn-default.active, .modal .open .dropdown-toggle.btn-default {
+	 
+		 
+		background-color: #2F3E48;
+		 
+		color:#FFF;
+		 
+		border-color: #31347B;
+	 
+	}
+	
+	</style>
 </head>
 <body>
 	<?php include "../connect/sessionCheck.php"; ?>
@@ -89,12 +117,54 @@
 					<label for="accountPassword">Enter your password to continue</label>
 					<input type="password" class="form-control" id="accountPassword" placeholder="Password">
 				  </div>
-				  <input type="button" id="accountUpdateBtn" class="btn btn-primary" onclick="updateAccount()" value="Update information" disabled>
+				  <button style="margin-right: 10px;" type="button" id="deactivateAccount"  data-target="#deactivateAccountModal" data-toggle="modal" class="pull-left btn btn-danger"><i class="fa fa-times"></i> Deactivate account</button>
+				  <input type="button" id="deleteAccount" data-target="#deleteAccountModal" data-toggle="modal" class="pull-left btn btn-default" value="Delete account"/>
+				  <input type="button" id="accountUpdateBtn" class="pull-right btn btn-primary" onclick="updateAccount()" value="Update information" disabled/>
 				</form>	
 				<p id="accountSubmitResult" style="visibility: hidden;"></p>
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal fade" tabindex="-1" id="deactivateAccountModal">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						&times;
+					</button>
+					<h4 class="modal-title">Deactivate your account</h4>
+				</div>
+				<div class="modal-body">
+					<p>Are you sure you want to deactivate your account?</p>
+				</div>
+				<div class="modal-footer">
+					<a href="queries/deactivateAccount.php" role="button" type="submit" id="deactivateAccountBtn" class="btn btn-danger"><i class="fa fa-times"></i> Deactivate account</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" tabindex="-1" id="deleteAccountModal">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						&times;
+					</button>
+					<h4 class="modal-title">Delete your account</h4>
+				</div>
+				<div class="modal-body">
+					<p>Are you sure you want to delete your account? This action cannot be undone!</p>
+				</div>
+				<div class="modal-footer">
+					<a href="queries/deleteAccount.php" role="button" id="deleteAccountBtn" class="btn btn-default">Delete account</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
 <?php include "footer.php" ?>
 </body>
 </html>
