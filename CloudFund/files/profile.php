@@ -141,9 +141,6 @@
 								<li>
 									<a href="#panel-567649" data-toggle="tab" style="background: #e3e3e3;">Posts</a>
 								</li>
-								<li id="comments-tab" class="hidden">
-									<a href="#special-panel-123456" data-toggle="tab" style="background: #e3e3e3;">Comments</a>
-								</li>
 							</ul>
 							<div style="border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; background: #e3e3e3; padding: 10px;" class="tab-content">
 								<div class="tab-pane fade in active" id="panel-200304">
@@ -279,18 +276,18 @@
 												
 												$commentid = $comment['CommentID'];
 												
-												$likes = $db->prepare("SELECT COUNT(*) count FROM reactcomment WHERE IsLike = 1;");
+												$likes = $db->prepare("SELECT COUNT(*) count FROM reactcomment WHERE CommentID = $commentid AND IsLike = 1;");
 												$likes->execute();
 												$num_likes = $likes->fetch();
 												$num_likes = $num_likes['count'];
 												
-												$dislikes = $db->prepare("SELECT COUNT(*) count FROM reactcomment WHERE IsLike = 0;");
+												$dislikes = $db->prepare("SELECT COUNT(*) count FROM reactcomment WHERE CommentID = $commentid AND IsLike = 0;");
 												$dislikes->execute();
 												$num_dislikes = $dislikes->fetch();
 												$num_dislikes = $num_dislikes['count'];
 												
 												
-												$userreaction = $db->prepare("SELECT * FROM reactcomment WHERE ReacterID = $currentuserid;");
+												$userreaction = $db->prepare("SELECT * FROM reactcomment WHERE ReacterID = $currentuserid AND CommentID = $commentid;");
 												$userreaction->execute();
 												$reactionfound = $userreaction->rowCount();
 												
@@ -308,8 +305,9 @@
 													<?php } else { ?>
 													<li><a id="commentanchorlike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="commentnumlikes<?=$comment['CommentID']?>"><?=$num_likes?></span>)</a></li>
 													<li>|</li>
-													<li><a class="clicked" id="commentanchordislike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="commentnumdislikes<?=$comment['CommentID']?>"><?=$num_dislikes?></span>)</a></li>										
+													<li><a class="clicked" id="commentanchordislike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="commentnumdislikes<?=$comment['CommentID']?>"><?=$num_dislikes?></span>)</a></li>
 												<?php }}	?>
+												<li class="pull-right">Posted on: <?=$comment['CommentDate']?></li>													
 											</ul>
 										</div>
 									</div> 

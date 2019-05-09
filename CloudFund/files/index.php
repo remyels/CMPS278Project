@@ -61,11 +61,23 @@
         <form>
             <ul class="list-inline" id='list_PostActions'>
 				<div id="post-result"></div>
-                <li class='active'><a href='#'>Update status</a></li>
-                <li><a href='#'>Add photo/video</a></li>
+				<li class='active'>
+					<a href='#panel-1' data-toggle="tab">Update status</a>
+				</li>
+                <li>
+					<a href='#panel-2' data-toggle="tab">Add photo/video</a>
+				</li>
 				<img id="post-thumbnail" style="display: none;"/>
             </ul>
-            <textarea class="form-control" placeholder="What's on your mind?"></textarea>
+            <textarea id="panel-1" class="form-control" placeholder="What's on your mind?"></textarea>
+			<!--
+			<div id="panel-2" class="form-control">
+				<span class="control-fileupload">
+					<label for="pic" class="text-left">Please choose a file on your computer.</label>
+					<input type="file" name="file" id="pic">
+				</span>
+			</div>
+			-->
             <ul class='list-inline post-actions'>
                 <li><a href="#"><span class="glyphicon glyphicon-camera"></span></a></li>
                 <li><a href="#" class='glyphicon glyphicon-user'></a></li>
@@ -108,6 +120,10 @@
 							$res = $query->fetch();
 							
 							$numcomments = $res['count'];
+							?>
+							<div class="col-md-12 column">
+							<div class="container-fluid">
+							<?php
 							if($row['PostType'] == "Text"){
 							?>
 								<div class="well">
@@ -122,7 +138,7 @@
 											<ul class="text-left list-inline list-unstyled">
 												<?php 
 													// need to check whether it is already liked or disliked or neither
-													$query = $db->prepare("SELECT * FROM reactpost WHERE ReacterID = $userid AND PostID = $postid;");
+													$query = $db->prepare("SELECT * FROM reactpost WHERE ReacterID = $currentuserid AND PostID = $postid;");
 													$query->execute();
 													$numrows = $query->rowCount();
 													
@@ -148,15 +164,110 @@
 														<li>|</li>
 												<?php }} ?>
 												
-												<li><a id="anchorcomment<?=$row['PostID']?>"><i class="fa fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
+												<li><a onclick="collapse(this)" id="anchorcomment<?=$row['PostID']?>"><i class="fa fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
 												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
 											</ul>
 										</div>
 									</div>
 								</div>
+							</div>
+						</div>
+						
+						<!-- COMMENTS START HERE -->
+						
+						<div class="row clearfix">
+						
+						<div class="col-md-1"></div>
+						
+						<div class="col-md-10 column">
+
+						<div class="container-fluid">
+						
+						<div class="collapse" id="commentbox<?=$row['PostID']?>">
+							
+						<?php
+						
+						$postid= $row['PostID'];
+						
+						$query = "SELECT * FROM comment JOIN user ON CommentPosterID = UserID WHERE PostID = $postid;"; 
+						
+						$comments = $db->query($query);
+						
+						foreach($comments as $comment) { ?>
+						
+							<div class="well">
+                                <div class="media">
+										<?php if ($comment['ProfilePicture']!="") { ?>
+										<p class="text-left"><img width="30px" height="30px" src="<?=$comment['ProfilePicture']?>" alt="Profile picture"> <?=$comment['FirstName']?> <?=$comment['LastName']?></p>
+										<?php } else { ?>
+										<p class="text-left"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="Profile picture"> <?=$comment['FirstName']?> <?=$comment['LastName']?></p>
+										<?php } ?>
+										<div class="media-body">
+										  <p class="undo"> <?=$comment['Content']?> </p>
+											<ul class="text-left list-inline list-unstyled">
+												<?php 
+												
+												// Need to get number of likes and dislikes on this particular comment as well as whether it's liked or not
+												
+												$commentid = $comment['CommentID'];
+												
+												$likes = $db->prepare("SELECT COUNT(*) count FROM reactcomment WHERE CommentID = $commentid AND IsLike = 1;");
+												$likes->execute();
+												$num_likes = $likes->fetch();
+												$num_likes = $num_likes['count'];
+												
+												$dislikes = $db->prepare("SELECT COUNT(*) count FROM reactcomment WHERE CommentID = $commentid AND IsLike = 0;");
+												$dislikes->execute();
+												$num_dislikes = $dislikes->fetch();
+												$num_dislikes = $num_dislikes['count'];
+												
+												
+												$userreaction = $db->prepare("SELECT * FROM reactcomment WHERE ReacterID = $currentuserid AND CommentID = $commentid;");
+												$userreaction->execute();
+												$reactionfound = $userreaction->rowCount();
+												
+												if ($reactionfound==0) { ?>
+												<li><a id="commentanchorlike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="commentnumlikes<?=$comment['CommentID']?>"><?=$num_likes?></span>)</a></li>
+												<li>|</li>
+												<li><a id="commentanchordislike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="commentnumdislikes<?=$comment['CommentID']?>"><?=$num_dislikes?></span>)</a></li>
+												<?php } else {
+													$reaction = $userreaction->fetch();
+													
+													if ($reaction['IsLike']==1) { ?>
+													<li><a class="clicked" id="commentanchorlike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="commentnumlikes<?=$comment['CommentID']?>"><?=$num_likes?></span>)</a></li>
+													<li>|</li>
+													<li><a id="commentanchordislike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="commentnumdislikes<?=$comment['CommentID']?>"><?=$num_dislikes?></span>)</a></li>										
+													<?php } else { ?>
+													<li><a id="commentanchorlike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="commentnumlikes<?=$comment['CommentID']?>"><?=$num_likes?></span>)</a></li>
+													<li>|</li>
+													<li><a class="clicked" id="commentanchordislike<?=$comment['CommentID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="commentnumdislikes<?=$comment['CommentID']?>"><?=$num_dislikes?></span>)</a></li>
+												<?php }}	?>
+												<li class="pull-right">Posted on: <?=$comment['CommentDate']?></li>													
+											</ul>
+										</div>
+									</div> 
+								</div>
+								<?php } ?>
+								<div id="comment-area<?=$postid?>" class="well">
+									<div class="media">
+										<p class="text-left"><strong>Add a comment</strong></p>
+										<div class="media-body">
+										    <textarea id="comment-content<?=$postid?>" class="form-control"></textarea>
+											<ul class="text-left list-inline list-unstyled">
+												<li class="pull-right"><button id="commentBtn<?=$postid?>" style="margin: 10px;" class="btn btn-default" disabled><i class="fa fa-comment"></i> Comment</button></li>
+											</ul>
+										</div>
+									</div> 
+								</div>
+						</div>
+								</div>
+								</div>
+								</div>
 								
+						<!-- COMMENTS END HERE -->
 							<?php
 							} else if($row['PostType'] == "Image") { ?>
+							
 								<div class="well">
 									<div class="media">
 										<p class="text-left"><img width="30px" height="30px" src="cutefatcat.jpg" alt="Cute fat cat"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
@@ -168,7 +279,7 @@
 											<ul class="undo list-inline list-unstyled">
 											<?php 
 													// need to check whether it is already liked or disliked or neither
-													$query = $db->prepare("SELECT * FROM reactpost WHERE ReacterID = $userid AND PostID = $postid;");
+													$query = $db->prepare("SELECT * FROM reactpost WHERE ReacterID = $currentuserid AND PostID = $postid;");
 													$query->execute();
 													$numrows = $query->rowCount();
 													
