@@ -19,7 +19,7 @@
 			color: black;
 		}
 		
-		.media-body a {
+		.media-body a, .media-body a:hover {
 			color: inherit;
 			text-decoration: inherit;
 			cursor: pointer;
@@ -27,6 +27,10 @@
 		
 		.clicked {
 			color: darkred !important;
+		}
+		
+		#upload-media {
+			cursor: pointer;
 		}
 		
 	</style>
@@ -62,14 +66,11 @@
             <ul class="list-inline" id='list_PostActions'>
 				<div id="post-result"></div>
 				<li class='active'>
-					<a href='#panel-1' data-toggle="tab">Update status</a>
-				</li>
-                <li>
-					<a href='#panel-2' data-toggle="tab">Add photo/video</a>
+					<a>Update status</a>
 				</li>
 				<img id="post-thumbnail" style="display: none;"/>
             </ul>
-            <textarea id="panel-1" class="form-control" placeholder="What's on your mind?"></textarea>
+            <textarea id="status-content" class="form-control" placeholder="What's on your mind?"></textarea>
 			<!--
 			<div id="panel-2" class="form-control">
 				<span class="control-fileupload">
@@ -79,14 +80,16 @@
 			</div>
 			-->
             <ul class='list-inline post-actions'>
-                <li><a href="#"><span class="glyphicon glyphicon-camera"></span></a></li>
-                <li><a href="#" class='glyphicon glyphicon-user'></a></li>
-                <li><a href="#" class='glyphicon glyphicon-map-marker'></a></li>
+				<li id="upload-image" class="pull-left"><i style="color: black;" class="fa fa-image"></i></li>
+				<input type="file" name="file" id="image" style="display: none;" />
+				<li>|</li>
+				<li id="upload-video" class="pull-left"><i style="color: black;" class="fa fa-video"></i></li>
+				<input type="file" name="file" id="video" style="display: none;" />
 				<label>Post Privacy:</label>
 				<li><label><input type="radio" name="privacy" value="1" checked="checked"> Public</label></li>
 				<li><label><input type="radio" name="privacy" value="2"> Friends Only</label></li>
 				<li><label><input type="radio" name="privacy" value="3"> Private</label></li>
-                <li class='pull-right'><a id="postStatus" href="#" class='btn btn-primary btn-xs'>Post</a></li>
+                <li class='pull-right'><input id="postStatus" type="button" value="Post" class='disabled btn btn-primary btn-xs'/></li>
             </ul>
         </form>
             </div>

@@ -2,6 +2,10 @@ window.onload = function() {
     $("#loginBtn").prop("disabled", true);
     $("#signUpBtn").prop("disabled", true);
 	$("#forgotPassword").click(forgotPassword);
+	$("#upload-media").click(uploadMedia);
+	$("#postStatus").click(postStatus);
+	$("#status-content, #image, #video").on("change input", checkPostBtn);
+	$("#image, #video").on("change input", deleteOtherMediaType);
 };
 
 $("#inputEmailAddress, #inputPassword").keyup(function() {
@@ -49,4 +53,107 @@ function resetPassword() {
 	$("#loginResult").load("queries/resetEmail.php", { 
 		email: $("#inputEmailAddress").val(),
 	});
+}
+
+function uploadMedia() {
+	$("input[id='image']").click();
+}
+
+function postStatus() {
+	if ($("#image").val()) {
+		var fd = new FormData();
+		var files = $("#image")[0].files[0];
+		fd.append('file', files);
+		
+		fd.append('status', $("#status-content").val());
+		fd.append('mode', 'image');
+		fd.append('privacy', $("input[name='privacy']:checked").val());
+		
+		$.ajax({
+			url: "queries/postStatus.php",
+			type: 'post',
+			data: fd,	
+			processData: false,
+			contentType: false,
+			success: function(response) {
+				if (response) {
+					console.log(response);
+				}
+				else {
+					alert("Failed to upload, please try again!");
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+			   console.log(textStatus);
+			   console.log(errorThrown);
+			},
+		});
+	}
+	else if ($("#video").val()) {
+		var fd = new FormData();
+		var files = $("#video")[0].files[0];
+		fd.append('file', files);
+		
+		fd.append('status', $("#status-content").val());
+		fd.append('mode', 'video');
+		fd.append('privacy', $("input[name='privacy']:checked").val());
+		
+		$.ajax({
+			url: "queries/postStatus.php",
+			type: 'post',
+			data: fd,	
+			processData: false,
+			contentType: false,
+			success: function(response) {
+				if (response) {
+					console.log(response);
+				}
+				else {
+					alert("Failed to upload, please try again!");
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+			   console.log(textStatus);
+			   console.log(errorThrown);
+			},
+		});
+	}
+	else {
+		$.ajax({
+			url: "queries/postStatus.php",
+			type: 'post',
+			data: {statuscontent: $("#status-content").val(), privacy: $("input[name='privacy']:checked").val()},	
+			success: function(response) {
+				if (response) {
+					// here, post should be prepended
+					alert(response);
+				}
+				else {
+					alert("Failed to upload, please try again!");
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+			   console.log(textStatus);
+			   console.log(errorThrown);
+			},
+		});
+	}
+}
+
+function checkPostBtn() {
+	if ($("#status-content").val() || $("#image").val()) {
+		$("#postStatus").removeClass("disabled");
+	}
+	else {
+		$("#postStatus").addClass("disabled");	
+	}
+}
+
+function deleteOtherMediaType() {
+	if ($("#image").val()) {
+		$("#video").val("");
+	}
+	else {
+		$("#image").val("");
+	}
 }
