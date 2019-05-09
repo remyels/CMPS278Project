@@ -9,3 +9,11 @@ function search(){
 		alert("Empty field!");
 	}
 }
+
+$(document).ready(function() {
+	$('.dropdown').click(function(e){
+	  if ($('.dropdown').find('.dropdown-menu').is(":hidden")){
+		$('.dropdown-toggle').dropdown('toggle');
+	  }
+	});
+});

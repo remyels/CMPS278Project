@@ -38,7 +38,7 @@
 					<li class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Chat
 						<span class="caret"></span></a>
-						<ul class="dropdown-menu scrollable-menu">
+						<ul role="menu" class="dropdown-menu scrollable-menu">
 							<?php 
 							
 							$currentuserid = $_SESSION['LoggedInUserID'];
