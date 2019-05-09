@@ -54,7 +54,7 @@
 			</div>
 		</div>
 		<?php } else { ?>
-		<div class="container bootstrap snippet">
+		<div class="container-fluid bootstrap snippet">
 		<div class="row">
         <div class="col-md-offset-3 col-md-6 col-xs-12">
             <div class="well well-sm well-social-post">
