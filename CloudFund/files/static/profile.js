@@ -140,6 +140,9 @@ function insertComment() {
 			$("#comment-area"+pid).before($("<div class='well'><div class='media'><p class='text-left'><img width='30px' height='30px' src='"+result['ProfilePicture']+"'> "+result['FirstName']+" "+ result['LastName']+"</p><div class='media-body'><p class='undo'>"+result['Content']+"</p><ul class='text-left list-inline list-unstyled'><li><a id='commentanchorlike"+result['CommentID']+"'><i class='fa fa-thumbs-up'></i> Like (<span id='commentnumlikes" + result['CommentID']+"'>0</span>)</a></li><li>|</li><li><a id='commentanchordislike"+result['CommentID']+"'><i class='fa fa-thumbs-down'></i> Dislike (<span id='commentnumdislikes" + result['CommentID']+"'>0</span>)</a></li><li class='pull-right'>Posted on: "+result['CommentDate']+"</li></ul></div></div></div>"));
 			$("#comment-content"+pid).val("");
 			$("#commentBtn"+pid).prop("disabled", true);
+			$("#numcomments"+pid).load("queries/getNumComments.php", {
+				postid: pid,
+			});
 		}
 	});
 }
