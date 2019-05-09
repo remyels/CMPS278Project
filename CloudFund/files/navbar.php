@@ -48,7 +48,7 @@
 							$numrows = $query->rowCount();			
 							if ($numrows==0) {
 							?>
-								<li style="text-align: center; -webkit-user-select: none;"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="No profile picture set">Nobody is online!</li>
+								<li style="text-align: center; -webkit-user-select: none;">Nobody is online!</li>
 							<?php } else {
 								
 							$rows = $query->fetchAll();
