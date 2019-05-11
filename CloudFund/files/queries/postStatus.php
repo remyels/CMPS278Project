@@ -17,10 +17,11 @@ if (isset($_POST['mode']) && !empty($_POST['mode'])) {
 		if($_POST['mode'] == 'image') {
 			
 			$query = "INSERT INTO post(PostID, UserID, Type, LevelOfAccess, Content, DateTimeOfPost) VALUES(NULL, $userid, 2, $privacy, $statuscontent, $time)";
-			$exec = $db->exec($query);
+			$exec = $db->exec($query);			
 			
 			if($exec) {
 				$postid = $db->lastInsertId();
+				
 				$extension = explode("/", $_FILES['file']['type'])[1];
 
 				//where i want to store the pic
@@ -95,6 +96,8 @@ else {
 		$query = "INSERT INTO post(PostID, UserID, Type, LevelOfAccess, Content, DateTimeOfPost) VALUES(NULL, $userid, 1, $privacy, $statuscontent, $time)";
 		$exec = $db->exec($query);
 		
+		$postid = $db->lastInsertId();
+		
 		if ($exec) {
 			$query = $db->prepare("SELECT * from user WHERE UserID = $userid;");
 			
@@ -103,7 +106,6 @@ else {
 			
 			$result = array();
 			
-			$postid = $db->lastInsertId();
 			$result['PostID'] = $postid;
 			$result['FirstName'] = $row['FirstName'];
 			$result['LastName'] = $row['LastName'];

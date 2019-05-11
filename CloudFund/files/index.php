@@ -186,14 +186,12 @@
 									<div class="media">
 										<p class="text-left"><img width="30px" height="30px" src="<?=$row['ProfilePicture']?>"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
 										<div class="media-body">
-											<a style="margin-right: 10px; pointer-events: none; cursor: default;" class="pull-left">
-											<img class="media-object" src="<?=$row['FileLocation']?>">
-											</a>
+											<img style="float: left; margin-right: 10px;" class="media-object" src="<?=$row['FileLocation']?>">
 											<p class="undo"><?= $row['Content'] ?></p>
 										</div>
 										<br />
 										<div class="media-body">
-											<ul class="list-inline list-unstyled">
+											<ul style="clear: left;" class="list-inline list-unstyled">
 											<?php 
 													// need to check whether it is already liked or disliked or neither
 													$query = $db->prepare("SELECT * FROM reactpost WHERE ReacterID = $currentuserid AND PostID = $postid;");

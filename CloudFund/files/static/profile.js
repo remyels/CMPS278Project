@@ -1,11 +1,6 @@
 $(document).ready(function() {
 	$("#addFriendBtn").click(addFriend);
-	$("a[id^='anchorlike']").click(likePost);
-	$("a[id^='anchordislike']").click(dislikePost);
-	$("a[id^='commentanchorlike']").click(likeComment);
-	$("a[id^='commentanchordislike']").click(dislikeComment);
-	$("textarea[id^='comment-content']").keyup(checkCommentBtn);
-	$("button[id^='commentBtn']").click(insertComment);
+	refreshOnClicks();
 });
 
 function addFriend() {
@@ -34,6 +29,7 @@ function addFriend() {
 }
 
 function likePost() {
+	console.log("Liked");
 	var section = $(this);
 	var id = $(this).attr("id").replace("anchorlike", "");
 	$.ajax({
@@ -226,4 +222,13 @@ function dislikeComment() {
 			}
 		}
 	});
+}
+
+function refreshOnClicks() {
+	$("a[id^='anchorlike']").click(likePost);
+	$("a[id^='anchordislike']").click(dislikePost);
+	$("a[id^='commentanchorlike']").click(likeComment);
+	$("a[id^='commentanchordislike']").click(dislikeComment);
+	$("textarea[id^='comment-content']").keyup(checkCommentBtn);
+	$("button[id^='commentBtn']").click(insertComment);
 }
