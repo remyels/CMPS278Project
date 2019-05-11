@@ -1,7 +1,7 @@
 function acceptFriend(clickedid){
 	var from = clickedid.substring(6);
 	//console.log(from);
-	var params = "UserIDFrom="+from;
+	var params = "UserIDFrom="+from+"&source=requests";
 
 	$.ajax({
         url: "../files/queries/acceptRequests.php",

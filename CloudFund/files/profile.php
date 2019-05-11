@@ -114,14 +114,19 @@
 								<span id="addFriendBtnText">Add friend</span>
 							 </button>
 							 
-							<?php } else if ($row['accepted']==0) { ?>
+							<?php } else if ($row['accepted']==0 && ($row['UserIDFrom'] == $_SESSION['LoggedInUserID'])) { ?>
 							
 							<button id="addFriendBtn" class="btn btn-success btn-block" type="button" disabled>
 								<i class="fa fa-check"></i> <span id="addFriendBtnText"> Request sent</span>
 							 </button>
 							
-							<?php } else {
-							?> 
+							<?php } else if ($row['accepted']==0 && ($row['UserIDTo'] == $_SESSION['LoggedInUserID'])) { ?>
+							<a href="queries/acceptRequests.php?UserID=<?= $_GET['UserID'] ?>&source=profile">
+							 <button style="white-space:normal !important; word-wrap: break-word; word-break: normal;" class="btn btn-primary btn-block" type="button">
+								<i class="fa fa-check-square-o" aria-hidden="true"></i> Accept incoming friend request
+							 </button>
+							 </a>
+							<?php } else { ?> 
 							<a href="compose.php?UserID=<?= $_GET['UserID'] ?>">
 							 <button class="btn btn-default btn-block" type="button">
 								Message
