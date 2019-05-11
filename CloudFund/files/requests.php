@@ -14,6 +14,11 @@
 <!--===============================================================================================-->
 	<!-- end of includes for the table -->
 	<script src="static/requests.js" type="text/javascript"></script>
+	<style>
+		.start {
+			text-align: start;
+		}
+	</style>
 </head>
 <body>
 	<?php 
@@ -70,7 +75,7 @@
 				<?php foreach($rows as $row)
 				{
 					?> 
-					<tr class="row100 body" id='row<?= $row['UserIDFrom']?>'>
+					<tr class="start row100 body" id='row<?= $row['UserIDFrom']?>'>
 						<td class="cell100 column1" id='<?= $row['UserIDFrom']?>' value='<?= $row['UserIDFrom']?>'><?= $row['firstName'] . " ". $row['lastName'] ?></td>
 						<td class="cell100 column2">
 							<div class="btn-group">
