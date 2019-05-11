@@ -90,7 +90,7 @@ else {
 		$time = $db->quote(date("Y-m-d H:i:s", strtotime("now + 3 hours")));
 		$timeunquoted = date("Y-m-d H:i:s", strtotime("now + 3 hours"));
 		$statuscontentunquoted = $_POST['statuscontent'];
-		$statuscontent = $db->quote(statuscontentunquoted);
+		$statuscontent = $db->quote($statuscontentunquoted);
 		
 		$query = "INSERT INTO post(PostID, UserID, Type, LevelOfAccess, Content, DateTimeOfPost) VALUES(NULL, $userid, 1, $privacy, $statuscontent, $time)";
 		$exec = $db->exec($query);

@@ -77,7 +77,7 @@ function postStatus() {
 			contentType: false,
 			success: function(response) {
 				if (response) {
-					console.log(response);
+					//console.log(response);
 					var result = JSON.parse(response);
 					$("#posts").prepend($("<div class='col-md-12 column'><div class='container-fluid'><div class='well'><div class='media'><p class='text-left'><img width='30px' height='30px' src='"+result['ProfilePicture']+"'>"+result['FirstName']+" "+result['LastName']+"</p><div class='media-body'><a style='margin-right: 10px; pointer-events: none; cursor: default;' class='pull-left'><img class='media-object' src='"+result['Image']+"'></a><p class='undo'>"+result['Content']+"</p></div><br /><div class='media-body'><ul class='list-inline list-unstyled'><li><a id='anchorlike"+result['PostID']+"'><i class='fa fa-thumbs-up'></i> Like (<span id='numlikes"+result['PostID']+">0</span>)</a></li><li>|</li><li><a id='anchordislike"+result['PostID']+"'><i class='fa fa-thumbs-down'></i> Dislike (<span id='numdislikes"+result['PostID']+">0</span>)</a></li><li>|</li><li><a onclick='collapse(this)' id='anchorcomment"+result['PostID']+"><i class='fa fa-comments'></i> Comment (<span id='numcomments"+result['PostID']+"'>0</span>)</a></li><li class='pull-right'>Posted on: "+result['PostDate']+"</li></ul></div></div></div></div></div><div class='row clearfix'><div class='col-md-1'></div><div class='col-md-10 column'><div class='container-fluid'><div class='collapse' id='commentbox"+result['PostID']+"'><div id='comment-area"+result['PostID']+"' class='well'><div class='media'><p class='text-left'><strong>Add a comment</strong></p><div class='media-body'><textarea id='comment-content"+result['PostID']+"' class='form-control'></textarea><ul class='text-left list-inline list-unstyled'><li class='pull-right'><button id='commentBtn"+result['PostID']+"' style='margin: 10px;' class='btn btn-default' disabled><i class='fa fa-comment'></i> Comment</button></li></ul></div></div></div></div></div></div></div>"));
 					
@@ -110,9 +110,6 @@ function postStatus() {
 			contentType: false,
 			success: function(response) {
 				if (response) {
-					console.log(response);
-					var result = JSON.parse(response);
-					
 					
 					
 				}
@@ -133,9 +130,11 @@ function postStatus() {
 			data: {statuscontent: $("#status-content").val(), privacy: $("input[name='privacy']:checked").val()},	
 			success: function(response) {
 				if (response) {
-					// here, post should be prepended
+					//console.log(response);
+					var result = JSON.parse(response);
+					$("#posts").prepend($("<div class='col-md-12 column'><div class='container-fluid'><div class='well'><div class='media'><p class='text-left'><img width='30px' height='30px' src='"+result['ProfilePicture']+"'>" +result['FirstName']+" "+result['LastName']+"</p><div class='media-body'><p class='undo'>"+result['Content']+"</p><ul class='text-left list-inline list-unstyled'><li><a id='anchorlike"+result['PostID']+"'><i class='fa fa-thumbs-up'></i> Like (<span id='numlikes"+result['PostID']+"'>0</span>)</a></li><li>|</li><li><a id='anchordislike"+result['PostID']+"'><i class='fa fa-thumbs-down'></i> Dislike (<span id='numdislikes"+result['PostID']+"'>0</span>)</a></li><li>|</li><li><a onclick='collapse(this)' id='anchorcomment"+result['PostID']+"'<i class='fa fa-comments'></i> Comment (<span id='numcomments"+result['PostID']+"'>0</span>)</a></li><li class='pull-right'>Posted on: "+result['PostDate']+"</li></ul></div></div></div></div><div class='row clearfix'><div class='col-md-1'></div><div class='col-md-10 column'><div class='container-fluid'><div class='collapse' id='commentbox"+result['PostID']+"'><div id='comment-area"+result['PostID']+"'class='well'><div class='media'><p class='text-left'><strong>Add a comment</strong></p><div class='media-body'><textarea id='comment-content"+result['PostID']+"' class='form-control'></textarea><ul class='text-left list-inline list-unstyled'><li class='pull-right'><button id='commentBtn"+result['PostID']+"' style='margin: 10px;' class='btn btn-default' disabled><i class='fa fa-comment'></i> Comment</button></li></ul></div></div></div></div></div></div></div>"));
 					
-					alert(response);
+					$("#status-content").val("");
 				}
 				else {
 					alert("Failed to upload, please try again!");
