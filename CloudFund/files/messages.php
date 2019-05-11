@@ -140,7 +140,7 @@
 							//Do something if the user has no messages
 							?>
 							<tr>
-								<td class="mailbox-subject undo">You have no new messages</td>
+								<td class="mailbox-subject undo">You have no messages</td>
 							</tr>
 							<?php
 						}
@@ -406,7 +406,7 @@
 					}else{
 						//Do something if the user has no messages
 						?>
-						<tr>
+						<tr class="no-deleted">
 							<td class="mailbox-subject undo">You did not delete any message yet.</td>
 						</tr>
 						<?php
