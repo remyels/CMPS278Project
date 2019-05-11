@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<?php include 'styles.php'; ?>
 	<style>
 		blockquote .small:before, blockquote footer:before, blockquote small:before {
 			content: "";
@@ -29,20 +28,19 @@
 			color: darkred !important;
 		}
 		
-		#upload-media {
+		#upload-image, #upload-video {
 			cursor: pointer;
 		}
 		
 	</style>
+	<?php  include 'styles.php'; ?>
 	<script src="static/profile.js"></script>
 	<link href="static/post.css" type="text/css" rel="stylesheet"/>
-    <?php include 'styles.php'; ?>
 	<script type="text/javascript" src="static/post.js"></script>
 </head>
 <body>
 
 	<?php include 'navbar.php'; ?>
-
 	<?php include 'modals.php'; ?>
 	<?php include "../connect/connectPDO.php"; ?>
 
@@ -80,11 +78,11 @@
 			</div>
 			-->
             <ul class='list-inline post-actions'>
-				<li id="upload-image" class="pull-left"><i style="color: black;" class="fa fa-image"></i></li>
-				<input type="file" name="file" id="image" style="display: none;" />
-				<li>|</li>
-				<li id="upload-video" class="pull-left"><i style="color: black;" class="fa fa-video"></i></li>
-				<input type="file" name="file" id="video" style="display: none;" />
+				<li class="pull-left">
+					<span id="upload-image"><i onclick="uploadMedia()" style="color: black;" class="fa fa-image"></i><input type="file" name="file" id="image" style="display: none;" /></span>
+					|
+					<span id="upload-video"><i onclick="uploadMedia()" style="color: black;" class="fa fa-film"></i><input type="file" name="file" id="video" style="display: none;" /></span>
+				</li>
 				<label>Post Privacy:</label>
 				<li><label><input type="radio" name="privacy" value="1" checked="checked"> Public</label></li>
 				<li><label><input type="radio" name="privacy" value="2"> Friends Only</label></li>
@@ -99,14 +97,21 @@
 	</div>
 </div>
 	<div class="container-fluid">
-					<div class="col-md-offset-3 col-md-6 col-xs-12">
+					<div class="col-md-offset-3 col-md-6 col-xs-12" id="posts">
 					<?php
-						$userid = $db->quote($_SESSION['LoggedInUserID']);
-						$query = "SELECT *, posttype.type AS PostType FROM post, posttype, user WHERE post.UserID = user.UserID AND post.Type = posttype.PostTypeID AND post.UserID IN (SELECT isfriendof.UserIDFrom FROM isfriendof WHERE isfriendof.accepted = 1 AND isfriendof.UserIDTo = $userid UNION SELECT isfriendof.UserIDTo FROM isfriendof WHERE isfriendof.accepted = 1 AND isfriendof.UserIDFrom = $userid) ORDER BY DateTimeOfPost DESC";
+						$userid = $_SESSION['LoggedInUserID'];
+						$query = "(SELECT *, posttype.type AS PostType FROM post, posttype, user WHERE post.UserID = user.UserID AND post.Type = posttype.PostTypeID AND post.UserID IN (SELECT isfriendof.UserIDFrom FROM isfriendof WHERE isfriendof.accepted = 1 AND isfriendof.UserIDTo = $userid UNION SELECT isfriendof.UserIDTo FROM isfriendof WHERE isfriendof.accepted = 1 AND isfriendof.UserIDFrom = $userid UNION SELECT $userid) ORDER BY DateTimeOfPost DESC);";
 						$rows = $db->query($query);
 						foreach($rows as $row){
+							$posterid = $row['UserID'];
 							$postid = $row['PostID'];
+							$loaid = $row['LevelOfAccess'];
 							$query = $db->query("SELECT * FROM reactpost WHERE PostID = $postid;");
+							$privacy = $db->prepare("SELECT * FROM levelofaccess WHERE LevelOfAccessID = $loaid;");
+							$privacy->execute();
+							$loa = $privacy->fetch();
+							$loa = $loa['LevelOfAccess'];
+							if (($posterid == $userid) || (($posterid != $userid)&&($loa!='Private'))) {
 							$numlikes = 0;
 							$numdislikes = 0;
 							foreach($query as $res) {
@@ -315,7 +320,8 @@
 							<?php
 							}
 							//check 3rd type for video
-						} ?>	
+							} // done checking for privacy
+						} // done with the posts ?>	
 						</div>
 					</div>
 <?php 

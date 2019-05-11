@@ -2,7 +2,6 @@ window.onload = function() {
     $("#loginBtn").prop("disabled", true);
     $("#signUpBtn").prop("disabled", true);
 	$("#forgotPassword").click(forgotPassword);
-	$("#upload-media").click(uploadMedia);
 	$("#postStatus").click(postStatus);
 	$("#status-content, #image, #video").on("change input", checkPostBtn);
 	$("#image, #video").on("change input", deleteOtherMediaType);
@@ -56,7 +55,9 @@ function resetPassword() {
 }
 
 function uploadMedia() {
-	$("input[id='image']").click();
+	var inputid = $(this).attr("id").replace("upload-", "");
+	console.log("input[id='"+inputid+"']");
+	$("input[id='"+inputid+"']").click();
 }
 
 function postStatus() {
@@ -78,6 +79,8 @@ function postStatus() {
 			success: function(response) {
 				if (response) {
 					console.log(response);
+					
+					// prepend $("sadsa:first")
 				}
 				else {
 					alert("Failed to upload, please try again!");
@@ -107,6 +110,9 @@ function postStatus() {
 			success: function(response) {
 				if (response) {
 					console.log(response);
+					
+					
+					
 				}
 				else {
 					alert("Failed to upload, please try again!");
@@ -126,6 +132,7 @@ function postStatus() {
 			success: function(response) {
 				if (response) {
 					// here, post should be prepended
+					
 					alert(response);
 				}
 				else {

@@ -6,6 +6,10 @@ session_start();
 
 if (isset($_POST['mode'])&&!empty($_POST['mode'])) {
 	
+	
+	
+	
+	
 }
 else {
 	// Plain post
