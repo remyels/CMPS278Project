@@ -54,9 +54,8 @@ function resetPassword() {
 	});
 }
 
-function uploadMedia() {
-	var inputid = $(this).attr("id").replace("upload-", "");
-	console.log("input[id='"+inputid+"']");
+function uploadMedia(btn) {
+	var inputid = $(btn).attr("id").replace("upload-", "");
 	$("input[id='"+inputid+"']").click();
 }
 

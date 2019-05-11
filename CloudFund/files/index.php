@@ -79,9 +79,9 @@
 			-->
             <ul class='list-inline post-actions'>
 				<li class="pull-left">
-					<span id="upload-image"><i onclick="uploadMedia()" style="color: black;" class="fa fa-image"></i><input type="file" name="file" id="image" style="display: none;" /></span>
+					<span><i onclick="uploadMedia(this)" id="upload-image" style="color: black;" class="fa fa-image"></i><input type="file" name="file" id="image" style="display: none;" /></span>
 					|
-					<span id="upload-video"><i onclick="uploadMedia()" style="color: black;" class="fa fa-film"></i><input type="file" name="file" id="video" style="display: none;" /></span>
+					<span><i onclick="uploadMedia(this)" id="upload-image" style="color: black;" class="fa fa-film"></i><input type="file" name="file" id="video" style="display: none;" /></span>
 				</li>
 				<label>Post Privacy:</label>
 				<li><label><input type="radio" name="privacy" value="1" checked="checked"> Public</label></li>
