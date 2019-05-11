@@ -39,7 +39,7 @@ function readMessage() {
 			}
 			
 			$("#deleteBtn").css("display", "inline");
-			anchor.find(".new-message").remove();
+			anchor.find(".new-message").css("visibility", "hidden");
 			$("#number-unread").load("queries/getNumberOfUnreadMessages.php");
 			$("#all-messages").fadeOut(1000, function() { $("#selected-message").fadeIn(1000); });
 		},

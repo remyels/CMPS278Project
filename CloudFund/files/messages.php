@@ -129,7 +129,7 @@
 					  ?>
 					  <tr id="<?=$row['MessageID']?>">
 						<td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-						<td class="mailbox-name notranslate"><a class="message-click" style="cursor: pointer;" data-id="<?=$row['MessageID']?>"><?php if($row["MessageStatus"] == "Unread"){echo '<span class="label new-message label-primary pull-right">new</span>';}?>From: <?=$row['FirstName']?> <?=$row['LastName']?></a></td>
+						<td class="mailbox-name notranslate"><a class="message-click" style="cursor: pointer;" data-id="<?=$row['MessageID']?>"><span style="<?php if($row["MessageStatus"] != "Unread"){echo 'visibility: hidden;';}?>" class="label new-message label-primary pull-right">new</span>From: <?=$row['FirstName']?> <?=$row['LastName']?></a></td>
 						<td class="mailbox-subject notranslate"><b><?=$row['Subject']?></b></td>
 						<td class="mailbox-attachment"></td>
 						<td class="mailbox-date"><?=$row['MessageDate']?></td>
@@ -292,7 +292,7 @@
 				  ?>
                   <tr id="<?=$row['MessageID']?>">
                     <td><div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
-                    <td class="mailbox-name notranslate"><a class="message-sent-click" style="cursor: pointer;" data-id="<?=$row['MessageID']?>"><?php if($row["MessageStatus"] == "Unread"){echo '<span class="label label-primary pull-right">Not Read</span>';}?>To:  <?=$row['FirstName']?> <?=$row['LastName']?></a></td>
+                    <td class="mailbox-name notranslate"><a class="message-sent-click" style="cursor: pointer;" data-id="<?=$row['MessageID']?>"><span style="<?php if($row["MessageStatus"] != "Unread"){echo 'visibility: hidden;';}?>" class="label label-primary pull-right">Not Read</span>To:  <?=$row['FirstName']?> <?=$row['LastName']?></a></td>
                     <td class="mailbox-subject notranslate"><b><?=$row['Subject']?></b></td>
                     <td class="mailbox-attachment"></td>
                     <td class="mailbox-date"><?=$row['MessageDate']?></td>
