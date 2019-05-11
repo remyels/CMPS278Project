@@ -184,13 +184,16 @@
 							else if($row['PostType'] == "Image") { ?>
 								<div class="well">
 									<div class="media">
-										<p class="text-left"><img width="30px" height="30px" src="cutefatcat.jpg" alt="Cute fat cat"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<p class="text-left"><img width="30px" height="30px" src="<?=$row['ProfilePicture']?>"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
 										<div class="media-body">
 											<a style="margin-right: 10px; pointer-events: none; cursor: default;" class="pull-left">
-											<img class="media-object" src="http://placekitten.com/150/150">
+											<img class="media-object" src="<?=$row['FileLocation']?>">
 											</a>
-											<p><?= $row['Content'] ?></p>
-											<ul class="undo list-inline list-unstyled">
+											<p class="undo"><?= $row['Content'] ?></p>
+										</div>
+										<br />
+										<div class="media-body">
+											<ul class="list-inline list-unstyled">
 											<?php 
 													// need to check whether it is already liked or disliked or neither
 													$query = $db->prepare("SELECT * FROM reactpost WHERE ReacterID = $currentuserid AND PostID = $postid;");
@@ -199,25 +202,25 @@
 													
 													// this means the user has never reacted to this post
 													if ($numrows == 0) { ?>
-												<li><a id="anchorlike<?=$row['PostID']?>"><i class="fas fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+												<li><a id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
 												<li>|</li>
-												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fas fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
 												<li>|</li>
 													<?php } else {
 													$res = $query->fetch();
 		
 													if ($res['IsLike']==1) { ?>
-												<li><a class="clicked" id="anchorlike<?=$row['PostID']?>"><i class="fas fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+												<li><a class="clicked" id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
 												<li>|</li>
-												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fas fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
 												<li>|</li>
 													<?php } else { ?>
-													<li><a id="anchorlike<?=$row['PostID']?>"><i class="fas fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+													<li><a id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
 													<li>|</li>
-													<li><a class="clicked" id="anchordislike<?=$row['PostID']?>"><i class="fas fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+													<li><a class="clicked" id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
 													<li>|</li>
 													<?php }} ?>
-												<li><a id="anchorcomment<?=$row['PostID']?>"><i class="fas fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
+												<li><a onclick="collapse(this)" id="anchorcomment<?=$row['PostID']?>"><i class="fa fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
 												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
 											</ul>
 									   </div>
