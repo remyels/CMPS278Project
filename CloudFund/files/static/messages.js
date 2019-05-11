@@ -122,21 +122,8 @@ function updateUnread() {
 }
 
 function deleteMessage() {
-	switchMenus("inbox");
-	$.ajax({
-		url: "queries/deleteMessage.php",
-		type: "get",
-		success: function(response) {
-			var result = JSON.parse(response);			
-			var firstname;
-			var lastname;
-			var subject;
-			var date;
-		
-			$("#deleted-messages tbody").append("<tr id='"+dataid+"'><td><div class='icheckbox_flat-blue' aria-checked='false' aria-disabled='false' style='position: relative;'><input type='checkbox' style='position: absolute; opacity: 0;'><ins class='iCheck-helper' style='position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;'></ins></div></td><td class='mailbox-name notranslate'>From: "+firstname+" "+lastname+"</td><td class='mailbox-subject notranslate'><b>"+subject+"</b></td><td class='mailbox-attachment'></td><td class='mailbox-date'>"+date+"</td></tr>");
-		}
-	});
 	var dataid = $(this).data("id");
+	switchMenus("inbox");
 	$("#"+dataid).remove();
 	// after deletion check if empty
 	if (!$("#all-messages tbody").html().trim()) {
@@ -147,4 +134,25 @@ function deleteMessage() {
 	if ($("#deleted-messages").find(".no-deleted")) {
 		$(".no-deleted").remove();
 	}
+	
+	$.ajax({
+		url: "queries/deleteMessage.php",
+		type: "get",
+		data: {id: dataid},
+		success: function(response) {
+			console.log(response);
+			var result = JSON.parse(response);			
+			var firstname = result['firstname'];
+			var lastname = result['lastname'];
+			var subject = result['subject'];
+			var date = result['date'];
+			
+			console.log(firstname);
+			console.log(lastname);
+			console.log(subject);
+			console.log(date);
+		
+			$("#deleted-messages tbody").append("<tr id='"+dataid+"'><td><div class='icheckbox_flat-blue' aria-checked='false' aria-disabled='false' style='position: relative;'><input type='checkbox' style='position: absolute; opacity: 0;'><ins class='iCheck-helper' style='position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;'></ins></div></td><td class='mailbox-name notranslate'>From: "+firstname+" "+lastname+"</td><td class='mailbox-subject notranslate'><b>"+subject+"</b></td><td class='mailbox-attachment'></td><td class='mailbox-date'>"+date+"</td></tr>");
+		}
+	});
 }
