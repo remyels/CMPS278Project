@@ -5,12 +5,21 @@ include ("../../connect/connectPDO.php");
 session_start();
 
 if (isset($_POST['mode']) && !empty($_POST['mode'])) {
-	if (isset($_POST['status']) && !empty($_POST['status'])&& isset($_POST['privacy']) && !empty($_POST['privacy'])) {
+	if (isset($_POST['privacy']) && !empty($_POST['privacy'])) {
 		$userid = $db->quote($_SESSION['LoggedInUserID']);
 		$privacy = $db->quote($_POST['privacy']);
 		$time = $db->quote(date("Y-m-d H:i:s", strtotime("now + 3 hours")));
 		$timeunquoted = date("Y-m-d H:i:s", strtotime("now + 3 hours"));
-		$statuscontentunquoted = $_POST['status'];
+		
+		$statuscontentunquoted;
+		$statuscontent;
+		if (isset($_POST['status'])&&!empty($_POST['status'])) {
+			$statuscontentunquoted = $_POST['status'];
+		}
+		else {
+			$statuscontentunquoted = "";
+		}
+			
 		$statuscontent = $db->quote($statuscontentunquoted);
 		
 		//hello 
@@ -74,9 +83,68 @@ if (isset($_POST['mode']) && !empty($_POST['mode'])) {
 			}
 		}
 		//mode is video
+		else if ($_POST['mode'] == 'video') {
+			
+			$query = "INSERT INTO post(PostID, UserID, Type, LevelOfAccess, Content, DateTimeOfPost) VALUES(NULL, $userid, 3, $privacy, $statuscontent, $time)";
+			$exec = $db->exec($query);	
+			
+			if ($exec) {
+				$postid = $db->lastInsertId();
+				
+				$extension = explode("/", $_FILES['file']['type'])[1];
+				
+				$location = "../static/images/uploads/posts/".$postid.'.'.$extension;
+				
+				$relativetofileslocation = $db->quote("static/images/uploads/posts/".$postid.'.'.$extension);
+				$relativetofileslocationunquoted = "static/images/uploads/posts/".$postid.'.'.$extension;
+				
+				$uploadOk = 1;
+
+				$valid_extensions = array("ogg","mp4");
+				
+				if(!in_array(strtolower($extension),$valid_extensions) ) {
+				   $uploadOk = 0;
+				}
+
+				if($uploadOk == 0){
+				   echo "Bad extension ".$extension;
+				
+				} else {
+					if(move_uploaded_file($_FILES['file']['tmp_name'], $location)){
+					
+						$query = "UPDATE post SET FileLocation = $relativetofileslocation WHERE PostID = $postid;";
+						$exec = $db->exec($query);
+							
+						if ($exec) {
+							$query = $db->prepare("SELECT * from user WHERE UserID = $userid;");
+							
+							$query->execute();
+							$row = $query->fetch();
+							
+							$result = array();
+							
+							$result['PostID'] = $postid;
+							$result['FirstName'] = $row['FirstName'];
+							$result['LastName'] = $row['LastName'];
+							$result['Content'] = $statuscontentunquoted;
+							$result['Video'] = $relativetofileslocationunquoted;
+							$result['PostDate'] = $timeunquoted;
+							
+							if ($row['ProfilePicture']=="") {
+								$result['ProfilePicture'] = "static/images/emptyuser.jpg";
+							}
+							else {
+								$result['ProfilePicture'] = $row['ProfilePicture'];
+							}
+							echo json_encode($result);
+						}
+					}
+				}
+			}
+			
+		}
 		else {
-			
-			
+			echo "Invalid mode!";
 		}
 	}
 	else {

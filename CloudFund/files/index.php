@@ -81,7 +81,7 @@
 				<li class="pull-left">
 					<span><i onclick="uploadMedia(this)" id="upload-image" style="color: black;" class="fa fa-image"></i><input type="file" name="file" id="image" style="display: none;" /></span>
 					|
-					<span><i onclick="uploadMedia(this)" id="upload-image" style="color: black;" class="fa fa-film"></i><input type="file" name="file" id="video" style="display: none;" /></span>
+					<span><i onclick="uploadMedia(this)" id="upload-video" style="color: black;" class="fa fa-film"></i><input type="file" name="file" id="video" style="display: none;" /></span>
 				</li>
 				<label>Post Privacy:</label>
 				<li><label><input type="radio" name="privacy" value="1" checked="checked"> Public</label></li>
@@ -227,7 +227,48 @@
 							<?php 
 							// for video 
 							} else { ?>
-							
+								<div class="well">
+									<div class="media">
+										<p class="text-left"><img width="30px" height="30px" src="<?=$row['ProfilePicture']?>"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<div class="media-body">
+											<video style="margin-bottom: 10px; float: left; margin-right: 10px;" class="media-object" width="320" height="240" controls>
+												<source src="<?=$row['FileLocation']?>" type="video/mp4">
+												Your browser does not support the video tag.
+											</video>
+											<p class="undo"><?= $row['Content'] ?></p>
+											<ul style="clear: left;" class="list-inline list-unstyled">
+											<?php 
+													// need to check whether it is already liked or disliked or neither
+													$query = $db->prepare("SELECT * FROM reactpost WHERE ReacterID = $currentuserid AND PostID = $postid;");
+													$query->execute();
+													$numrows = $query->rowCount();
+													
+													// this means the user has never reacted to this post
+													if ($numrows == 0) { ?>
+												<li><a id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+												<li>|</li>
+												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+												<li>|</li>
+													<?php } else {
+													$res = $query->fetch();
+		
+													if ($res['IsLike']==1) { ?>
+												<li><a class="clicked" id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+												<li>|</li>
+												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+												<li>|</li>
+													<?php } else { ?>
+													<li><a id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+													<li>|</li>
+													<li><a class="clicked" id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+													<li>|</li>
+													<?php }} ?>
+												<li><a onclick="collapse(this)" id="anchorcomment<?=$row['PostID']?>"><i class="fa fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
+												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
+											</ul>
+									   </div>
+									</div>
+								  </div>
 							<?php } ?>
 							</div>
 						</div>

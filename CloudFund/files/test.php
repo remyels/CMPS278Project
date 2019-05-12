@@ -56,7 +56,7 @@
 									<div class="media">
 										<p class="text-left"><img width="30px" height="30px" src="http://placekitten.com/30/30" alt="Cute cat"> Feeder d3eef</p>
 										<div class="media-body">
-											<video class="media-object" style="float: left;" width="320" height="240" controls>
+											<video class="media-object" style="margin-bottom: 10px; margin-right: 10px; float: left;" width="320" height="240" controls>
 											  <source src="videoplayback.mp4" type="video/mp4">
 											  Your browser does not support the video tag.
 											</video>
