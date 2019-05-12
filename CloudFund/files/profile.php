@@ -144,7 +144,7 @@
 									<a href="#panel-200304" data-toggle="tab" style="background: #e3e3e3;">About</a>
 								</li>
 								<li>
-									<a href="#panel-567649" data-toggle="tab" style="background: #e3e3e3;">Posts</a>
+									<a href="#posts" data-toggle="tab" style="background: #e3e3e3;">Posts</a>
 								</li>
 							</ul>
 							<div style="border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; background: #e3e3e3; padding: 10px;" class="tab-content">
@@ -163,14 +163,22 @@
 										</div>
 									</div>
 								</div>
-								<div class="tab-pane fade" id="panel-567649">
+								<div class="tab-pane fade" id="posts">
 													 <div class="row clearfix">
 					
 						
 					<?php
 						$uservisited = $db->quote($_GET['UserID']);
-						$query = "SELECT *, posttype.type AS PostType FROM post, posttype, user WHERE post.userid = $uservisited AND post.userid = user.userid AND posttypeid = post.type ORDER BY DateTimeOfPost DESC;";
-						$rows = $db->query($query);
+						// if friends with user
+						$rows;
+						if ($row['accepted']==1) {
+							$query = "SELECT *, pt.Type AS PostType FROM post p JOIN posttype pt ON p.Type = pt.PostTypeID JOIN user u ON p.UserID = u.UserID JOIN levelofaccess loa ON p.LevelOfAccess = loa.LevelOfAccessID WHERE p.userid = $uservisited AND loa.LevelOfAccess<>'Private' ORDER BY DateTimeOfPost DESC;";
+							$rows = $db->query($query);
+						}
+						else {
+							$query = "SELECT *, pt.Type AS PostType FROM post p JOIN posttype pt ON p.Type = pt.PostTypeID JOIN user u ON p.UserID = u.UserID JOIN levelofaccess loa ON p.LevelOfAccess = loa.LevelOfAccessID WHERE p.userid = $uservisited AND loa.LevelOfAccess='Public' ORDER BY DateTimeOfPost DESC;";
+							$rows = $db->query($query);
+						}
 						foreach($rows as $row){
 							$postid = $row['PostID'];
 							$query = $db->query("SELECT * FROM reactpost WHERE PostID = $postid;");
