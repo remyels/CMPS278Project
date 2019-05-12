@@ -163,8 +163,8 @@
 										</div>
 									</div>
 								</div>
-								<div class="tab-pane fade" id="posts">
-													 <div class="row clearfix">
+					<div class="tab-pane fade" id="posts">
+					<div class="row clearfix">
 					
 						
 					<?php
@@ -199,17 +199,19 @@
 							
 							$numcomments = $res['count'];
 							?>
-							<div class="col-md-12 column">
-							<div class="container-fluid">
-							<?php
-							if($row['PostType'] == "Text"){
+							
+					<div class="col-md-12 column">
+					<div class="container-fluid">
+						<?php
+							// for text
+							if($row['PostType'] == "Text") {
 							?>
 								<div class="well">
 									<div class="media">
-										<?php if ($profile['ProfilePicture']=="") { ?> 
+										<?php if ($row['ProfilePicture']=="") { ?> 
 										<p class="text-left"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="No profile picture set"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
 										<?php } else { ?>
-										<p class="text-left"><img width="30px" height="30px" src="<?=$profile['ProfilePicture']?>" alt="Profile picture"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<p class="text-left"><img width="30px" height="30px" src="<?=$row['ProfilePicture']?>" alt="Profile picture"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
 										<?php } ?>
 										<div class="media-body">
 										  <p class="undo"> <?= $row['Content'] ?></p>
@@ -248,21 +250,108 @@
 										</div>
 									</div>
 								</div>
+							<?php } 
+							// for image
+							else if($row['PostType'] == "Image") { ?>
+								<div class="well">
+									<div class="media">
+										<p class="text-left"><img width="30px" height="30px" src="<?=$row['ProfilePicture']?>"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<div class="media-body">
+											<img style="float: left; margin-right: 10px;" class="media-object" src="<?=$row['FileLocation']?>">
+											<p class="undo"><?= $row['Content'] ?></p>
+										</div>
+										<br />
+										<div class="media-body">
+											<ul style="clear: left;" class="list-inline list-unstyled">
+											<?php 
+													// need to check whether it is already liked or disliked or neither
+													$query = $db->prepare("SELECT * FROM reactpost WHERE ReacterID = $currentuserid AND PostID = $postid;");
+													$query->execute();
+													$numrows = $query->rowCount();
+													
+													// this means the user has never reacted to this post
+													if ($numrows == 0) { ?>
+												<li class="pull-left"><a id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+												<li class="pull-left">|</li>
+												<li class="pull-left"><a id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+												<li class="pull-left">|</li>
+													<?php } else {
+													$res = $query->fetch();
+		
+													if ($res['IsLike']==1) { ?>
+												<li class="pull-left"><a class="clicked" id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+												<li class="pull-left">|</li>
+												<li class="pull-left"><a id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+												<li class="pull-left">|</li>
+													<?php } else { ?>
+													<li class="pull-left"><a id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+													<li class="pull-left">|</li>
+													<li class="pull-left"><a class="clicked" id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+													<li class="pull-left">|</li>
+													<?php }} ?>
+												<li class="pull-left"><a onclick="collapse(this)" id="anchorcomment<?=$row['PostID']?>"><i class="fa fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
+												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
+											</ul>
+									   </div>
+									</div>
+								  </div>
+							<?php 
+							// for video 
+							} else { ?>
+								<div class="well">
+									<div class="media">
+										<p class="text-left"><img width="30px" height="30px" src="<?=$row['ProfilePicture']?>"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<div class="media-body">
+											<video style="margin-bottom: 10px; float: left; margin-right: 10px;" class="media-object" width="320" height="240" controls>
+												<source src="<?=$row['FileLocation']?>" type="video/mp4">
+												Your browser does not support the video tag.
+											</video>
+											
+											<p class="undo"><?= $row['Content'] ?></p>
+											<ul style="clear: left;" class="list-inline list-unstyled">
+											<?php 
+													// need to check whether it is already liked or disliked or neither
+													$query = $db->prepare("SELECT * FROM reactpost WHERE ReacterID = $currentuserid AND PostID = $postid;");
+													$query->execute();
+													$numrows = $query->rowCount();
+													
+													// this means the user has never reacted to this post
+													if ($numrows == 0) { ?>
+												<li class="pull-left"><a id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+												<li class="pull-left">|</li>
+												<li class="pull-left"><a id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+												<li class="pull-left">|</li>
+													<?php } else {
+													$res = $query->fetch();
+		
+													if ($res['IsLike']==1) { ?>
+												<li class="pull-left"><a class="clicked" id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+												<li>|</li>
+												<li class="pull-left"><a id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+												<li class="pull-left">|</li>
+													<?php } else { ?>
+													<li class="pull-left"><a id="anchorlike<?=$row['PostID']?>"><i class="fa fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
+													<li class="pull-left">|</li>
+													<li class="pull-left"><a class="clicked" id="anchordislike<?=$row['PostID']?>"><i class="fa fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
+													<li class="pull-left">|</li>
+													<?php }} ?>
+												<li class="pull-left"><a onclick="collapse(this)" id="anchorcomment<?=$row['PostID']?>"><i class="fa fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
+												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
+											</ul>
+									   </div>
+									</div>
+								  </div>
+							<?php } ?>
 							</div>
 						</div>
 						
 						<!-- COMMENTS START HERE -->
 						
 						<div class="row clearfix">
-						
 						<div class="col-md-1"></div>
-						
 						<div class="col-md-10 column">
-
 						<div class="container-fluid">
-						
 						<div class="collapse" id="commentbox<?=$row['PostID']?>">
-							
 						<?php
 						
 						$postid= $row['PostID'];
@@ -325,7 +414,7 @@
 										</div>
 									</div> 
 								</div>
-								<?php } ?>
+							<?php } ?>
 								<div id="comment-area<?=$postid?>" class="well">
 									<div class="media">
 										<p class="text-left"><strong>Add a comment</strong></p>
@@ -343,63 +432,16 @@
 								</div>
 								
 						<!-- COMMENTS END HERE -->
-							<?php
-							} else if($row['PostType'] == "Image") { ?>
-							
-								<div class="well">
-									<div class="media">
-										<p class="text-left"><img width="30px" height="30px" src="cutefatcat.jpg" alt="Cute fat cat"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
-										<div class="media-body">
-											<a style="margin-right: 10px; pointer-events: none; cursor: default;" class="pull-left">
-											<img class="media-object" src="http://placekitten.com/150/150">
-											</a>
-											<p><?= $row['Content'] ?></p>
-											<ul class="undo list-inline list-unstyled">
-											<?php 
-													// need to check whether it is already liked or disliked or neither
-													$query = $db->prepare("SELECT * FROM reactpost WHERE ReacterID = $currentuserid AND PostID = $postid;");
-													$query->execute();
-													$numrows = $query->rowCount();
-													
-													// this means the user has never reacted to this post
-													if ($numrows == 0) { ?>
-												<li><a id="anchorlike<?=$row['PostID']?>"><i class="fas fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
-												<li>|</li>
-												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fas fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
-												<li>|</li>
-													<?php } else {
-													$res = $query->fetch();
-		
-													if ($res['IsLike']==1) { ?>
-												<li><a class="clicked" id="anchorlike<?=$row['PostID']?>"><i class="fas fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
-												<li>|</li>
-												<li><a id="anchordislike<?=$row['PostID']?>"><i class="fas fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
-												<li>|</li>
-													<?php } else { ?>
-													<li><a id="anchorlike<?=$row['PostID']?>"><i class="fas fa-thumbs-up"></i> Like (<span id="numlikes<?=$row['PostID']?>"><?=$numlikes?></span>)</a></li>
-													<li>|</li>
-													<li><a class="clicked" id="anchordislike<?=$row['PostID']?>"><i class="fas fa-thumbs-down"></i> Dislike (<span id="numdislikes<?=$row['PostID']?>"><?=$numdislikes?></span>)</a></li>
-													<li>|</li>
-													<?php }} ?>
-												<li><a id="anchorcomment<?=$row['PostID']?>"><i class="fas fa-comments"></i> Comment (<span id="numcomments<?=$row['PostID']?>"><?=$numcomments?></span>)</a></li>
-												<li class="pull-right">Posted on: <?=$row['DateTimeOfPost']?></li>
-											</ul>
-									   </div>
-									</div>
-								  </div>
-							<?php
-							}
-							//check 3rd type for video
-						} ?>	
-						</div>
+						<?php }}} ?>
+						
+					</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-		
-	<?php }}} ?>
+</div>	
+	<?php }?>
 </div>
 <?php include 'footer.php'; ?>
 </body>
