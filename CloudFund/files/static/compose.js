@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	checkIfPosted();
-    $("#compose-textarea").wysihtml5();
+    //$("#compose-textarea").wysihtml5();
 	$("#inputSubject").bind('change keyup', checkSendBtn);
 	$("#sendBtn").click(sendMsg);
 });

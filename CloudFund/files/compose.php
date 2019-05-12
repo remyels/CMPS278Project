@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php include 'styles.php'; ?>
+	<?php include 'styles.php'; ?>
 	<link rel="stylesheet" type="text/css" href="static/AdminLTE.min.css">
-	<link rel="stylesheet" href="static/bootstrap3-wysihtml5.min.css">
-	<script src="static/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+	<!--<link rel="stylesheet" href="static/bootstrap3-wysihtml5.min.css">
+	<script src="static/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>-->
 	<script src="static/compose.js" type="text/javascript"></script>
 	<script src="https://unpkg.com/moment"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.25/moment-timezone.min.js"></script>
@@ -86,9 +86,7 @@
 					<input id="inputSubject" class="form-control" placeholder="Subject:">
 				  </div>
 				  <div class="form-group">
-						<textarea id="compose-textarea" class="form-control" style="height: 300px">
-						  
-						</textarea>
+						<textarea id="compose-textarea" class="form-control" style="height: 300px"></textarea>
 				  </div>
 				  
 				</div>
@@ -108,3 +106,5 @@
 		</div>
 	</div>
 </div>
+</body>
+</html>
