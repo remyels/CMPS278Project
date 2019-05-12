@@ -184,7 +184,11 @@
 							else if($row['PostType'] == "Image") { ?>
 								<div class="well">
 									<div class="media">
-										<p class="text-left"><img width="30px" height="30px" src="<?=$row['ProfilePicture']?>"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<?php if ($row['ProfilePicture']=="") { ?> 
+										<p class="text-left"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="No profile picture set"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<?php } else { ?>
+										<p class="text-left"><img width="30px" height="30px" src="<?=$row['ProfilePicture']?>" alt="Profile picture"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<?php } ?>
 										<div class="media-body">
 											<img style="float: left; margin-right: 10px;" class="media-object" src="<?=$row['FileLocation']?>">
 											<p class="undo"><?= $row['Content'] ?></p>
@@ -229,7 +233,11 @@
 							} else { ?>
 								<div class="well">
 									<div class="media">
-										<p class="text-left"><img width="30px" height="30px" src="<?=$row['ProfilePicture']?>"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<?php if ($row['ProfilePicture']=="") { ?> 
+										<p class="text-left"><img width="30px" height="30px" src="static/images/emptyuser.jpg" alt="No profile picture set"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<?php } else { ?>
+										<p class="text-left"><img width="30px" height="30px" src="<?=$row['ProfilePicture']?>" alt="Profile picture"> <?=$row['FirstName'] . " " . $row['LastName']?></p>
+										<?php } ?>
 										<div class="media-body">
 											<video style="margin-bottom: 10px; float: left; margin-right: 10px;" class="media-object" width="320" height="240" controls>
 												<source src="<?=$row['FileLocation']?>" type="video/mp4">
